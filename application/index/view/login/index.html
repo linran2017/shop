@@ -1,0 +1,123 @@
+{extend name='base'/}
+{block name='center'}
+<style>
+    .error{
+        border: 1px solid red !important;
+    }
+</style>
+<div id="content_for_layout" class="yhsd-base">
+    <div class="wrapper log-block-outer">
+        <div class="cont log-block-inner register">
+            <div class="log-block">
+                <h4 class="yhsd-font-title" style="text-align: center">登录</h4>
+                <form class="input-field" id="yhsd-register-inputField" action="" method="post">
+                    <div class="input-area input-area-lg" data-state="">
+
+                        <input id="yhsd-register-type"  class="input yhsd-font-text" type="text" name="username" placeholder="邮箱">
+                        <span style="color: red; font-size: 12px; display: none" class="warn">
+
+                        </span>
+                    </div>
+                    <div class="input-area input-area-lg" data-state="">
+                        <input id="yhsd-register-code" class="input yhsd-font-text" type="password" placeholder="密码" name="userpassword" >
+                        <span style="color: red; font-size: 12px; display: none" class="warn">
+
+                        </span>
+                    </div>
+                    <div class="rapid yhsd-font-desc">
+                        没有账号？请<a href="{:url('index/register/index')}" class="yhsd-font-link">去注册</a>
+                    </div>
+                    <button id="yhsd-register-submit" class="btn btn-primary btn-lg btn-block" type="submit">登录</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    //用户名
+    $('input[name=username]').blur(function () {
+        var username=$(this).val();
+        if (username==''){
+            $(this).addClass('error').siblings('.warn').show().html('邮箱不得为空');
+            return;
+        }else {
+            $(this).removeClass('error').siblings('.warn').hide().html('');
+        }
+        var reg = /^[0-9a-zA-Z-_]+@[0-9a-z]+\.[a-z]{2,3}(\.[a-z]{2,3})?$/g;
+        if (!reg.test(username)) {
+            $(this).addClass('error').siblings('.warn').show().html('邮箱格式不正确');
+            return;
+        }else {
+            $(this).removeClass('error').siblings('.warn').hide().html('');
+        }
+        $.ajax({
+            url:"{:url('username')}",
+            data:{username:username},
+            dataType:'json',
+            type:'post',
+            success:function (reg) {
+                console.log(reg);
+                if(!reg){
+                    if(!reg){
+                        $('input[name=username]').addClass('error').siblings('.warn').show().html('该用户不存在');
+                        return;
+                    }else {
+                        $('input[name=username]').removeClass('error').siblings('.warn').show().html('');
+                    }
+                }
+            }
+        })
+    })
+    //密码验证
+    $('#yhsd-register-code').blur(function () {
+        var userpassword=$(this).val();
+        var username=$('input[name=username]').val();
+        if(userpassword==''){
+            $(this).addClass('error').siblings('.warn').show().html('密码不得为空');
+            return;
+        }else {
+            $(this).removeClass('error').siblings('.warn').hide().html('');
+        }
+        $.ajax({
+            url:"{:url('userpassword')}",
+            data:{username:username,userpassword:userpassword},
+            dataType:'json',
+            type:'post',
+            success:function (reg) {
+                console.log(reg);
+                if(!reg){
+                    if(!reg){
+                        $('input[name=userpassword]').addClass('error').siblings('.warn').show().html('密码输入错误');
+                        return;
+                    }else {
+                        $('input[name=userpassword]').removeClass('error').siblings('.warn').show().html('');
+                    }
+                }
+            }
+        })
+    })
+    //表单提交
+    $('form').submit(function () {
+        //alert(1);
+        if($('.error').length>0){
+            return false;
+        }
+        var email= $('input[name=username]').val();
+        var userpassword= $('input[name=userpassword]').val();
+        if(email==""){
+            $('input[name=username]').addClass('error').siblings('.warn').show().html('用户名不能为空');
+            return false;
+        }else {
+            $('input[name=username]').removeClass('error').siblings('.warn').show().html('');
+            $('#yhsd-register-vcode-show').show();
+        }
+        if(userpassword==""){
+            $('input[name=userpassword]').addClass('error').siblings('.warn').show().html('密码不能为空');
+            return false;
+        }else {
+            $('input[name=userpassword]').removeClass('error').siblings('.warn').show().html('');
+            $('#yhsd-register-vcode-show').show();
+        }
+    })
+</script>
+{/block}

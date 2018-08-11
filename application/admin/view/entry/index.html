@@ -1,0 +1,33 @@
+{extend name='entry'/}
+
+{block name='content'}
+
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">网站后台</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <table class="layui-table">
+                    <tbody>
+                    <tr>
+                        <td>核心框架</td>
+                        <td>thinkphp框架</td>
+                    </tr>
+                    <tr>
+                        <td>框架版本号</td>
+                        <td>{$version}</td>
+                    </tr>
+                    <tr>
+                        <td>网站作者</td>
+                        <td>林然</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

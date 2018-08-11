@@ -1,0 +1,204 @@
+{extend name='base'/}
+{block name='center'}
+<div id="content_for_layout" class="yhsd-base"><div class="wrapper">
+    <div class="cont account">
+        <dl class="account-sideNav yhsd-form-background yhsd-main-border">
+            <dd>
+                <a href="javascript:;" class="yhsd-font-desc">个人中心</a>
+            </dd>
+            <dd class="selected">
+                <a href="{:url('index/order/lists')}" class="yhsd-font-desc">我的订单</a>
+            </dd>
+            <dd>
+                <a href="{:url('index/address/index')}" class="yhsd-font-desc">收货地址</a>
+            </dd>
+        </dl>
+        <div class="account-sideCont">
+            <div class="account-sideCont-block account-orderList yhsd-main-border">
+                <h3 class="yhsd-font-title yhsd-form-background">订单详情</h3>
+                <style>
+                    *{
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .order-box{
+                        width: 946px;
+                    }
+                    .order-box .detail{
+                        margin-top: 5px;
+                        margin-left: 10px;
+                        color: #0a0a0a;
+                        font-size: 14px;
+                    }
+                    .order-box .detail b{
+                        font-weight: 600;
+                        color: black;
+                    }
+                    .order-box .detail a{
+                        font-size: 14px;
+                        color: white;
+                        display: inline-block;
+                        background: #9dafb8;
+                        cursor: pointer;
+                        width: 74px;
+                        height: 28px;
+                        line-height: 28px;
+                        text-align: center;
+                        border-radius: 3px;
+                    }
+                    .order-box .detail a:hover{
+                        opacity: 0.8;
+                    }
+                    .order-box .goods{
+                        margin-top: 5px;
+                        margin-bottom: 5px;
+                        margin-left: 10px;
+                        width: 924px;
+                        border: 1px solid #ececec;
+                    }
+                    .order-box .goods ul{
+                        margin-top: 0;
+                        margin-bottom: 0;
+                    }
+                    .order-box .goods ul li{
+                        width: 924px;
+                        height: 120px;
+                        border-bottom: 1px solid #ececec;
+                        position: relative;
+                    }
+                    .order-box .goods ul li img{
+                        width: 80px;
+                        height: 80px;
+                        position: absolute;
+                        top: 20px;
+                        left: 10px;
+                    }
+                    .order-box .goods ul li .title{
+                        color: #0a0a0a;
+                        font-size: 14px;
+                        width: 340px;
+                        position: absolute;
+                        top:20px;
+                        left: 110px;
+                    }
+                    .order-box .goods ul li .title:hover{
+                        color: #999;
+                        cursor: pointer;
+                    }
+
+                    .order-box .goods ul li .attr{
+                        position: absolute;
+                        color: #999999;
+                        font-size: 14px;
+                        top: 20px;
+                        left: 500px;
+                    }
+                    .order-box .goods ul li .price{
+                        position: absolute;
+                        color: #0a0a0a;
+                        font-size: 14px;
+                        top: 20px;
+                        left: 610px;
+                    }
+                    .order-box .goods ul li .num{
+                        position: absolute;
+                        color: #0a0a0a;
+                        font-size: 14px;
+                        top: 20px;
+                        left: 720px;
+                    }
+                    .order-box .goods ul li .subtotal{
+                        position: absolute;
+                        color: #0a0a0a;
+                        font-size: 14px;
+                        top: 20px;
+                        right: 30px;
+                    }
+                    .order-box .goods ul li .subtotalprice{
+                        position: absolute;
+                        color: #f44;
+                        font-size: 16px;
+                        top: 40px;
+                        right: 30px;
+                    }
+                    .order-box .goods .bottom{
+                        width: 924px;
+                        height: 45px;
+                        position: relative;
+                        margin-top: 0;
+                    }
+                    .order-box .goods .bottom span{
+                        position: absolute;
+                        font-size: 16px;
+                        color: #0a0a0a;
+                        top: 0;
+                        right: 10px;
+                        line-height: 45px;
+                    }
+                    .order-box .goods .bottom span b{
+                        color: #f44;
+                        font-size: 18px;
+                        font-weight: 600;
+                    }
+                </style>
+                <div class="order-box">
+                    <div class="detail">
+                        <b>订单编号：</b><span>{$orderData['order_code']}</span>
+                    </div>
+                    <div class="detail">
+                        <b>创建时间：</b><span>{:date('20y年m月d日 H时i分s秒',$orderData['order_createtime'])}</span>
+                    </div>
+                    <div class="detail">
+                        {if condition="$orderData['order_pay']"}
+                        <b>支付时间：</b><span>{:date('20y年m月d日 H时i分s秒',$orderData['order_paytime'])}</span>
+                        {/if}
+                    </div>
+                    <div class="detail">
+                        <b>收货地址：</b><span>{$orderData['address_persone']}{$orderData['address_tel']} {$orderData['address_detail']} {$orderData['address_code']}</span>
+                    </div>
+                    <div class="detail">
+                        <b>订单留言：</b><span>{$orderData['order_note']}</span>
+                    </div>
+                    <div class="detail">
+                        <b>订单状态：</b>
+                        {if condition="$orderData['order_pay']"}
+                        <span>已付款</span>
+                        {else /}
+                        <span>未付款</span>  <a href="{:url('index/pay/index',['order_id'=>$orderData['order_id']])}">去付款</a>
+                        {/if}
+                    </div>
+                    <div class="goods">
+                        <ul>
+                            {foreach name="orderData['buy']" item='v'}
+                            <li>
+                                <img src="{$v['attr_img']}"/>
+                                <a href="{:url('index/content/index',['goods_id'=>$v['goods_id']])}" target="_blank" class="title">{$v['goods_title']}</a>
+                                <span class="attr">属性:{$v['attr_name']}</span>
+                                <span class="price">￥{$v['goods_price']}</span>
+                                <span class="num">×{$v['buy_attrnum']}</span>
+                                <span class="subtotal">小计</span>
+                                <span class="subtotalprice">￥{$v['subtotalprice']}</span>
+                            </li>
+                            {/foreach}
+                        </ul>
+                        <div class="bottom">
+                            <span>总计：<b>￥{$orderData['order_totalprice']}</b></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+<script>
+    //设置元素高度
+function height() {
+    var length=$('.goods').find('li').length;
+    //alert(length);
+    $('goods').css({'height':(length*120+length-1+45)+'px'});
+}
+height();
+
+</script>
+{/block}

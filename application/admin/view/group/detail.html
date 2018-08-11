@@ -1,0 +1,41 @@
+{extend name='auth'/}
+
+{block name='content'}
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li>
+                <a href="javascript:;">【{$oldData['title']}】用户组权限详情</a>
+            </li>
+        </ul>
+        <div class="layui-tab-content">
+            <div style="padding: 15px;">
+                    <fieldset class="layui-elem-field">
+                        <legend>分配权限</legend>
+                        <div class="layui-field-box">
+                            {foreach name='rules' key='k' item='v'}
+                            <fieldset class="layui-elem-field father-all">
+                                <legend>{$k}</legend>
+                                <div class="layui-field-box">
+                                            {foreach name="v" item='vo'}
+                                             <h3 style="float: left; margin-left: 5px; margin-right: 5px; font-size: 14px;">{$vo['title']}</h3>
+                                            {/foreach}
+
+                                </div>
+                            </fieldset>
+                            {/foreach}
+                        </div>
+                    </fieldset>
+
+
+                <script>
+                    //Demo
+                    layui.use('form', function(){
+                        var form = layui.form;
+                    });
+
+                </script>
+
+            </div>
+{/block}

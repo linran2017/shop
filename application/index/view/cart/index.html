@@ -1,0 +1,441 @@
+{extend name='base'/}
+{block name='center'}
+{if condition="$data!=='[]'"}
+<div id="content_for_layout" class="yhsd-base"><div class="wrapper">
+    <div class="cont">
+        <div class="cart-head">
+            <h2 class="yhsd-font-title">购物车</h2>
+        </div>
+        <div id="app">
+            <list></list>
+        </div>
+
+        <script type="text/x-template" id="list">
+        <div class="cart-cont yhsd-main-border">
+            <div class="cart-cont-head yhsd-main-border yhsd-form-background">
+                <span class="checkbox-group">
+                    <label for="cart-select-all" class="cart-select-all yhsd-font-text">
+                        <span v-if="allcheck==0" @click="allchecked()" class="checkbox-btn"></span>
+                        <span v-else @click="allchecked()" class="checkbox-btn selected"></span>全选
+                </label>
+
+                </span>
+                <span class="name yhsd-font-text">商品名称</span>
+                <span class="price yhsd-font-text">单价</span>
+                <span class="quantity yhsd-font-text">数量</span>
+                <span class="subtotal yhsd-font-text">小计</span>
+                <span class="operate yhsd-font-text">操作</span>
+            </div>
+            <!--购物车商品循环区域头部结束-->
+            <!--购物车商品循环区域-->
+
+            <ul class="cart-cont-list" id="cart-cont-list">
+                <li v-for="(v,k) in attr" class="cart-li yhsd-main-border">
+                    <div class="cart-cont-item cart-cont-item-product yhsd-form-background yhsd-main-border  selected" data-vid="4349387" data-reason="">
+                        <div class="checkbox-group">
+                            <label for="item-#{index}">
+                                <span v-if="v.cart_checked==1" @click="checked(v.cart_id)" class="checkbox-btn selected"></span>
+                                <span v-else @click="checked(v.cart_id)" class="checkbox-btn"></span>
+                            </label>
+                            <input type="checkbox" name="cancel-reason" id="item-#{index}" checked="">
+                        </div>
+                        <div class="img">
+                            <img :src="v.attr_img">
+                        </div>
+                        <div class="name">
+                            <a href="javascript:;" @click="go(v.cart_id)" target="_blank" class="yhsd-font-title">
+                                {{v.goods_title}}
+                            </a>
+                        </div>
+                        <div class="sku  yhsd-font-desc">
+                            <span class="edit yhsd-base-iconfont icon-edit"></span>
+                            属性 : {{v.attr_name}}
+                        </div>
+                        <div class="unit-price yhsd-font-text">¥<span>{{v.goods_price}}</span></div>
+                        <div class="control control-num">
+                            <div class="quantity-selector yhsd-font-text">
+                                <span @click="cut(v.cart_id)" class="yhsd-base-iconfont icon-minus"></span>
+                                <input class="number-input yhsd-font-text" v-model="v.cart_attrnum" :value="v.cart_attrnum" type="text" name="cart_attrnum">
+                                <span @click="add(v.cart_id)" class="yhsd-base-iconfont icon-add"></span>
+                            </div>
+                        </div>
+                        <div class="subtotal-price price yhsd-font-text">¥<span>{{v.totalPrice}}</span></div>
+                        <div @click="del(v.cart_id)" class="delete yhsd-font-text">删除</div>
+                    </div>
+                </li>
+            </ul>
+            <!--购物车商品循环区域结束-->
+            <!--购物车商品循环区域尾部-->
+            <div class="cart-cont-footer" id="cart-cont-footer">
+                <div class="discounts yhsd-form-background yhsd-main-border">
+
+                </div>
+                <div class="confirm yhsd-form-background yhsd-main-border">
+                    <a id="yhsd-cart-submit" href="javascript:void(0);" @click="account()" class="btn btn-vital btn-lg">确认结算</a>
+                    <div class="confirm-submit">
+                        已选商品<span class="quantity">{{totalNum}}</span>
+                        件<span class="total">合计（不含运费）：</span>
+                        <span class="price">¥{{totalPrice}}</span>
+                    </div>
+                    <div class="confirm-options">
+                        <span class="checkbox-group">
+                            <label for="footer-select-all" class="cart-select-all yhsd-font-text">
+                                 <span v-if="allcheck==0" @click="allchecked()" class="checkbox-btn"></span>
+                                 <span v-else @click="allchecked()" class="checkbox-btn selected"></span>全选
+                            </label>
+                            <input type="checkbox" name="footer-select-all" id="footer-select-all">
+                        </span>
+                        <span @click="alldel()" id="yhsd-cart-delete" class="yhsd-font-text">删除</span>
+                    </div>
+                </div>
+            </div>
+
+            <!--购物车商品循环区域尾部结束-->
+        </div>
+        </script>
+        <!--删除购物车商品-->
+
+
+        <!--至少选择一件商品结束-->
+    </div>
+</div>
+</div>
+<div class="all-cover" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65);">
+    <div  class="del-win yhsd-popup" id="yhsd-modal" style="display: none; margin-left: -295px; margin-top: -103.5px;">
+        <h3>删除商品</h3>
+        <div class="box">
+            <div class="title">确定要把选中商品移出购物车吗?</div>
+            <div class="ctrl-btns">
+                <button class="del-confirm btn btn-primary btn-md yhsd-popup-close" id="yhsd-cart-delete-submit" type="submit">确定</button>
+                <button class="del-close btn btn-secondary btn-md yhsd-popup-close" type="button">取消</button>
+            </div>
+        </div>
+    </div>
+    <!--删除购物车商品结束-->
+    <!--至少选择一件商品-->
+    <div class="del-limit yhsd-popup" id="yhsd-modal" style="display: none; margin-left: -295px; margin-top: -103.5px;">
+        <h3>删除选中商品</h3>
+        <div class="box"><div class="title">请至少选中一件商品</div>
+            <div class="ctrl-btns">
+                <button class="limit-close btn btn-primary btn-md yhsd-popup-close" type="submit">确定</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    let store=new Vuex.Store({
+        //数据仓库
+        state:{
+            //购物车商品属性
+            attr:{$data},
+        },
+        //通过计算获得的数据
+        getters:{
+            //购物车商品属性
+            attr(state){
+                let attr=state.attr;
+                attr.forEach((v)=>{
+                    v.totalPrice=v.cart_attrnum*v.goods_price;
+                })
+                return attr;
+            },
+            //所有商品的总价
+            totalPrice:state=>{
+                let totalPrice=0;
+               state.attr.forEach((v)=>{
+                   //被选中的商品属性
+                   if(v.cart_checked==1){
+                       totalPrice+=v.cart_attrnum*v.goods_price;
+                   }
+                })
+                return totalPrice;
+            },
+            //单个商品属性的小计
+            totalNum:state=>{
+                let totalNum=0;
+                state.attr.forEach((v)=>{
+                    //被选中的商品属性
+                    if(v.cart_checked==1){
+                        totalNum+=v.cart_attrnum;
+                    }
+                })
+                return totalNum;
+            },
+            allcheck:state=>{
+                let allcheck=1;
+                state.attr.forEach((v)=>{
+                    if(v.cart_checked==0){
+                        allcheck=0;
+                        return;
+                    }
+                })
+                return allcheck;
+            }
+        },
+        //挂彩
+        mutations:{
+            //属性数量减少
+            cut(getters,param){
+                let k;
+                for (let i=0; i<getters.attr.length;i++){
+                    if(getters.attr[i].cart_id==param.cart_id){
+                        k=i;
+                        break;
+                    }
+                }
+                //属性数量最小为1
+                if(this.getters.attr[k].cart_attrnum<=1){
+                    this.getters.attr[k].cart_attrnum=1
+                }else {
+                    this.getters.attr[k].cart_attrnum=this.getters.attr[k].cart_attrnum*1-1;
+                    location.href="{:url('index/cart/num')}"+'?cart_id='+getters.attr[k].cart_id+'&cart_attrnum='+getters.attr[k].cart_attrnum;
+                   /* $.ajax({
+                        url:"{:url('index/cart/num')}",
+                        data:{cart_id:getters.attr[k].cart_id,cart_attrnum:getters.attr[k].cart_attrnum},
+                        type:'post',
+                        success:function (reg) {
+                            console.log(reg);
+                            if(reg){
+                                alert(1);
+                            }
+                        }
+                    })*/
+                }
+            },
+            //商品属性数量增加
+            add(getters,param){
+                let k;
+                for(let i=0;i<getters.attr.length;i++){
+                    if(getters.attr[i].cart_id==param.cart_id){
+                        k=i;
+                        break;
+                    }
+                }
+                //属性数量最大为库存量
+                if(getters.attr[k].cart_attrnum>=getters.attr[k].attr_stock){
+                    getters.attr[k].cart_attrnum=getters.attr[k].attr_stock
+                }else {
+                    getters.attr[k].cart_attrnum=getters.attr[k].cart_attrnum*1+1;
+                    location.href="{:url('index/cart/num')}"+'?cart_id='+getters.attr[k].cart_id+'&cart_attrnum='+getters.attr[k].cart_attrnum;
+                }
+            },
+            //被选中的商品属性
+            checked(getters,param){
+                let k;
+                for(let i=0;i<getters.attr.length;i++){
+                    if(getters.attr[i].cart_id==param.cart_id){
+                        k=i;
+                        break;
+                    }
+                }
+                //如果选中点击就不选中
+                if(getters.attr[k].cart_checked){
+                    getters.attr[k].cart_checked=0;
+                }else {
+                    //不选中就点击被选中
+                    getters.attr[k].cart_checked=1;
+                }
+                location.href="{:url('index/cart/checked')}"+'?cart_id='+getters.attr[k].cart_id+'&cart_checked='+getters.attr[k].cart_checked;
+            },
+            //删除购物车商品属性
+            del(getters,param){
+
+               let k;
+                for(let i=0;i<getters.attr.length;i++){
+                    if(getters.attr[i].cart_id==param.cart_id){
+                        k=i;
+                        break;
+                    }
+                }
+                id=getters.attr[k].cart_id;
+                //alert(id);
+                $('.all-cover').show().css({'z-index':'9'});
+                $('.del-win').show().css({'position':'fixed','top':'50%','left':'50%'});
+            },
+            //全选
+            allchecked(getters){
+                console.log(this.getters.allcheck);
+                if(this.getters.allcheck==1){
+                    getters.allcheck=0;
+                    getters.attr.forEach((v)=>{
+                        v.cart_checked=0;
+                    })
+                    location.href="{:url('index/cart/allchecked')}"+'?allcheck=0';
+                }else{
+                    getters.allcheck=1;
+                    getters.attr.forEach((v)=>{
+                        v.cart_checked=1;
+                    })
+                }
+                location.href="{:url('index/cart/allchecked')}"+'?allcheck='+getters.allcheck;
+            },
+            //删除购物车里所有被选中的商品
+            alldel(getters){
+                let k=0;
+                for(let i=0;i<this.getters.attr.length;i++){
+                    if(this.getters.attr[i].cart_checked==1){
+                        k=1;
+                        break;
+                    }
+                }
+                if(k){
+                    id='all';
+                    $('.all-cover').show().css({'z-index':'9'});
+                    $('.del-win').show().css({'position':'fixed','top':'50%','left':'50%'});
+
+                }else {
+                    $('.all-cover').show().css({'z-index':'9'});
+                    $('.del-limit').show().css({'position':'fixed','top':'50%','left':'50%'});
+                }
+
+            },
+            //点击商品标题去商品页
+            go(getters,param){
+                let k;
+                for(let i=0;i<getters.attr.length;i++){
+                    if(getters.attr[i].cart_id==param.cart_id){
+                        k=i;
+                        break;
+                    }
+                }
+                location.href="{:url('index/content/index')}"+'?goods_id='+getters.attr[k].goods_id;
+            },
+            //确认结算
+            account(getters){
+                let k=0;
+                for(let i=0;i<this.getters.attr.length;i++){
+                    if(this.getters.attr[i].cart_checked==1){
+                        k=1;
+                        break;
+                    }
+                }
+                if(k==0){
+                    $('.all-cover').show().css({'z-index':'9'});
+                    $('.del-limit').show().css({'position':'fixed','top':'50%','left':'50%'});
+                }else{
+                    location.href="{:url('index/order/order')}";
+                }
+            }
+        }
+    })
+    var list={
+        template:'#list',
+        computed:{
+            //商品属性
+            attr(){
+                return this.$store.getters.attr;
+            },
+            //所有商品总价
+            totalPrice(){
+                return this.$store.getters.totalPrice;
+            },
+            //所有商品属性的数量
+            totalNum(){
+                return this.$store.getters.totalNum;
+            },
+            //全选
+            allcheck(){
+                return this.$store.getters.allcheck;
+            },
+        },
+        //方法
+        methods:{
+            //减少属性数量
+            cut(cart_id){
+                this.$store.commit('cut',{cart_id})
+            },
+            //增加属性数量
+            add(cart_id){
+                this.$store.commit('add',{cart_id})
+            },
+            //选中购物车里的商品属性
+            checked(cart_id){
+                this.$store.commit('checked',{cart_id})
+            },
+            //删除商品属性
+            del(cart_id){
+                this.$store.commit('del',{cart_id})
+            },
+            //全选
+            allchecked(){
+                this.$store.commit('allchecked');
+            },
+
+            //删除购物车中所有被选中的商品属性
+            alldel(){
+                this.$store.commit('alldel')
+            },
+            //点击商品标题去商品详情页
+            go(cart_id){
+                this.$store.commit('go',{cart_id})
+            },
+            //确认结算
+            account(){
+                this.$store.commit('account')
+            }
+        }
+    }
+new Vue({
+    el:'#app',
+    store,
+    components:{list},
+})
+    //删除窗口隐藏
+$('.del-close').click(function () {
+    $('.all-cover').hide()
+    $(this).parents('.del-win').hide();
+})
+    //确定删除
+    $('.del-confirm').click(function () {
+        if(id=='all'){
+            location.href="{:url('index/cart/alldel')}";
+        }else{
+            location.href="{:url('index/cart/del')}"+'?id='+id;
+        }
+
+    })
+    $('.limit-close').click(function () {
+        $('.all-cover').hide();
+        $('.del-limit').hide();
+    })
+    //确认结算
+
+</script>
+{else /}
+<div id="content_for_layout" class="yhsd-base"><div class="wrapper">
+    <div class="cont">
+        <div class="cart-head">
+            <h2 class="yhsd-font-title">购物车</h2>
+        </div>
+            <div class="cart-cont yhsd-main-border">
+                <div class="cart-cont-head yhsd-main-border yhsd-form-background">
+                <span class="checkbox-group">
+                    <label for="cart-select-all" class="cart-select-all yhsd-font-text">
+                        <span class="checkbox-btn"></span>
+                       全选
+                </label>
+
+                </span>
+                    <span class="name yhsd-font-text">商品名称</span>
+                    <span class="price yhsd-font-text">单价</span>
+                    <span class="quantity yhsd-font-text">数量</span>
+                    <span class="subtotal yhsd-font-text">小计</span>
+                    <span class="operate yhsd-font-text">操作</span>
+                </div>
+                <!--购物车商品循环区域头部结束-->
+                <!--购物车商品循环区域-->
+
+                <ul class="cart-cont-list empty" id="cart-cont-list">
+                    <li class="yhsd-main-border">
+                        <div class="cart-cont-item yhsd-main-border">您的购物车还没有商品，快去挑选心爱的商品吧！<br>
+                            <a href="/" class="btn btn-primary btn-sm">去逛逛</a>
+                        </div>
+                    </li>
+                </ul>
+                <!--购物车商品循环区域结束-->
+    </div>
+</div>
+</div>
+</div>
+{/if}
+{/block}

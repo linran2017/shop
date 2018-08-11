@@ -1,0 +1,152 @@
+{extend name='base'/}
+{block name='center'}
+<div id="content_for_layout" class="yhsd-base">
+    <div class="wrapper">
+        <div style="position: relative;" class="cont">
+            <!--订单头部-->
+            <div style="position: relative;" class="cart-head">
+            <h2 class="yhsd-font-title">订单支付</h2>
+
+            <div style="position: absolute; bottom: -20px; right: 10px;" class="confirm-submit">
+                支付总额：
+            <span style="color: #f44; font-size: 18px;" class="price">¥{$data['order_totalprice']}</span>
+            </div>
+        </div>
+            <!--订单头部结束-->
+           <!-- 支付方式-->
+            <style>
+                .cart-cont{
+                    position: relative;
+                }
+                .cart-cont h4{
+                    position: absolute;
+                    top:5px;
+                    left: 25px;
+                }
+                .cart-cont ul{
+                    position: absolute;
+                    height: 100px;
+                    width: 80%;
+                    left:10%;
+                    bottom: -130px;
+                    /*flex弹性盒模型居中法*/
+                    display: flex;
+                    /*让子元素在主轴上居中*/
+                    justify-content: space-around;
+                    /*让子元素在交叉轴上居中*/
+                    align-items: center;
+
+                }
+                .cart-cont ul li{
+                    width: 144px;
+                    height: 42px;
+                    text-align: center;
+                    line-height: 42px;
+                }
+                .cart-cont ul li a{
+                    color: #0a0a0a;
+                }
+                .cart-cont ul li a:hover{
+                    color: #788b95;
+                }
+                .icon {
+                    width: 1em; height: 1em;
+                    vertical-align: -0.15em;
+                    fill: currentColor;
+                    overflow: hidden;
+                    font-size: 30px;
+                }
+                .border{
+                    border: 1px solid #9dafb8;
+                }
+            </style>
+            <div class="cart-cont yhsd-main-border">
+                <h4>支付方式</h4>
+                <ul>
+
+                    <li>
+                        <a>
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-yinhangqiazhifu"></use>
+                            </svg>
+                            银行卡支付
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-xinyongqiazhifu"></use>
+                            </svg>
+                            信用卡支付
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-zhifubao"></use>
+                            </svg>
+                            支付宝支付
+                        </a>
+                    </li>
+                    <li>
+                        <a>
+                            <svg class="icon" aria-hidden="true">
+                                <use xlink:href="#icon-weixinzhifu"></use>
+                            </svg>
+                            微信支付
+                        </a>
+                    </li>
+                </ul>
+            </div>
+            <!-- 支付方式结束-->
+            <!--确认支付-->
+            <div class="cart-cont-footer" id="cart-cont-footer">
+                <div style="position: absolute; bottom: 0px; left: 10px;" class="confirm-submit">
+                    订单编号：{$data['order_code']}
+                </div>
+                <div style="border: none; border-top: 1px solid #ececec;" class="confirm yhsd-form-background yhsd-main-border">
+                    <a id="yhsd-cart-submit" href="javascript:void(0);" class="btn btn-vital btn-lg">确认结算</a>
+
+                </div>
+            </div>
+            <!--确认支结束-->
+        </div>
+    </div>
+    <div class="all-cover" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65);">
+        <!--选择支付方式-->
+        <div class="order-pay yhsd-popup" id="yhsd-modal" style="z-index: 99999; display: none; margin-left: -295px; margin-top: -103.5px;">
+            <h3>支付方式</h3>
+            <div class="box"><div class="title">请选择支付方式</div>
+                <div class="ctrl-btns">
+                    <button class="order-close btn btn-primary btn-md yhsd-popup-close" type="submit">确定</button>
+                </div>
+            </div>
+        </div>
+        <!--选择支付方式结束-->
+    </div>
+
+    <input type="hidden" name="id" value="{$data['order_id']}" />
+</div>
+<script>
+    $(' .cart-cont ul li').click(function () {
+        //alert(1);
+        $(this).addClass('border').siblings('li').removeClass('border');
+    })
+
+    //确认支付
+    $('#yhsd-cart-submit').click(function () {
+        if($('.border').length==0){
+            $('.all-cover').show().css({'z-index':'9'});
+            $('.order-pay').show().css({'position':'fixed','top':'50%','left':'50%'});
+        }else{
+            var id=Number($('input[name=id]').val());
+            location.href="{:url('index/pay/handle')}"+'?id='+id;
+        }
+    })
+    //选择支付方式提示窗口隐藏
+    $('.order-close').click(function () {
+        $('.all-cover').hide();
+        $('.order-pay').hide();
+    })
+</script>
+{/block}

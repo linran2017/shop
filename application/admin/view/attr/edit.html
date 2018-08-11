@@ -1,0 +1,94 @@
+{extend name='goods'/}
+
+{block name='content'}
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <a href="{:url('store')}">属性添加</a>
+            </li>
+        </ul>
+        <div class="layui-tab-content">
+
+                <!--主体内容开始-->
+            <div style="padding: 15px;">
+                <!--表单开始-->
+                <form class="layui-form" action="" method="post">
+
+
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">属性名称</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="attr_name" value="{$oldData['attr_name']}" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-upload">
+                                    <label class="layui-form-label">属性图片</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="attr_img" autocomplete="off" value="{$oldData['attr_img']}" class="layui-input">
+                                        <button type="button" class="layui-btn" id="test1">上传图片</button>
+                                        <div class="layui-upload-list">
+                                            <img src="{$oldData['attr_img']}" style="width: 100px; height: 100px;" class="layui-upload-img" id="demo1">
+                                            <p id="demoText"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">属性库存</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" name="attr_stock" value="{$oldData['attr_stock']}" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                        <!--属性信息结束-->
+                    <input type="hidden" name="attr_id" value="{:input('param.id')}"/>
+
+                <div class="layui-form-item" style="float: right">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">保存</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+                <!--主体内容结束-->
+
+            <!--表单结束-->
+        </div>
+        <script>
+            //Demo
+            layui.use(['form','upload', 'layedit'], function(){
+                var form = layui.form;
+                var upload=layui.upload;
+                var $ = layui.jquery;
+                //普通图片上传
+                var uploadInst = upload.render({
+                    elem: '#test1'
+                    ,url: "{:url('system/component/upload')}"
+                    ,before: function(obj){
+                        //预读本地文件示例，不支持ie8
+                        obj.preview(function(index, file, result){
+                            $('#demo1').attr('src', result); //图片链接（base64）
+                        });
+                    }
+                    ,done: function(res){
+                        //如果上传失败
+                        if(res.code > 0){
+                            return layer.msg('上传失败');
+                        }
+                        console.log(res);
+                        //上传成功
+                        $('.layui-upload').find('input').val(res.message);
+                    }
+                    ,error: function(){
+                        //演示失败状态，并实现重传
+                        var demoText = $('#demoText');
+                        demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                        demoText.find('.demo-reload').on('click', function(){
+                            uploadInst.upload();
+                        });
+                    }
+                });
+            });
+        </script>
+{/block}

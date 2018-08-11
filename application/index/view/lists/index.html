@@ -1,0 +1,107 @@
+{extend name='base'/}
+{block name='center'/}
+<div class="row">
+    <!--页签-->
+    <div class="medium-12 columns show-for-large-only" role="navigation">
+        <ul class="breadcrumbs clearfix settings-main_border">
+            <li><a href="/">首页</a></li>
+            <li class="current">{$page}</li>
+        </ul>
+    </div>
+    <!--页签结束-->
+
+    <!--选项表格-->
+    <div class="large-12 columns">
+        <div class="prolist-filter">
+            <table class="prolist-filter-table settings-main_border" cellpadding="0" cellspacing="0" border="0">
+                <tbody>
+
+
+
+                <tr>
+                    <th class="settings-main_border prolist-filter-itemname settings-text_color">品牌</th>
+                    <td class="prolist-filter-item settings-main_border" colspan="2">
+                        {foreach name='brand' item='v'}
+                        <a class="settings-link_color" href="{:url('index/lists/index',['brand_id'=>$v['id']])}">{$v['name']}</a>
+                        {/foreach}
+                    </td>
+                </tr>
+
+                {if condition='isset($cateData)'}
+                {if condition='$cateData'}
+                <tr>
+
+                    <th class="prolist-filter-itemname settings-main_border settings-text_color">类别</th>
+                    <td class="prolist-filter-item settings-main_border" colspan="2">
+                        {foreach name='cateData' item='v'}
+                        <a class="settings-link_color" href="{:url('index/lists/index',['cate_id'=>$v['id']])}">{$v['name']}</a>
+                        {/foreach}
+                    </td>
+                </tr>
+                {/if}
+                {/if}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <!--选项表格-->
+
+
+    <!--显示按钮-->
+    <div class="large-12 columns">
+        <div class="pro_list_filter-order clearfix">
+            <div class="pro_list_filter-pro-item">
+                <div class="taxis float-left">
+                    <span>排序：</span>
+                    <a class="settings-main_border settings-desc_color" href="?a=price"><i class="tcfont icon-price"></i>价格↑</a>
+
+
+                    <a href="?a=updatetime" class=" settings-main_border settings-desc_color "><i class="tcfont icon-shijian"></i>上架时间</a>
+                </div>
+                <div class="float-right counts">
+                    共 <strong class="settings-link_color">{$num}</strong> 个符合条件的商品
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--显示按钮结束-->
+
+
+    <!--栏目商品-->
+    <div class="larger-12 columns">
+        <ul class="product_list lazyload_scope">
+
+
+
+            {foreach name='goodsData' item='v'}
+            <li class="medium-3 columns">
+                <div class="item true">
+                    <div class="item-pic">
+                        <a href="{:url('index/content/index',['goods_id'=>$v['goods_id']])}" taget="_self" title="{$v['goods_title']}">
+                            <img class=" " src="{$v['goods_master']}" alt="{$v['goods_title']}">
+
+                        </a>
+
+                    </div>
+                    <div class="item-info">
+                        <p class="item-name">
+                            <a class="settings-text_color" href="{:url('index/content/index',['goods_id'=>$v['goods_id']])}" title="{$v['goods_title']}" target="_self">{$v['goods_title']}</a>
+                        </p>
+                        <p class="item-price">
+                            <span class="settings-price_color">¥{$v['goods_price']}</span>
+
+                        </p>
+
+
+                    </div>
+                </div>
+            </li>
+            {/foreach}
+        </ul>
+    </div>
+    <!--栏目商品结束-->
+
+
+</div>
+{/block}

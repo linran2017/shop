@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>后台管理员登录</title>
+    <link rel="stylesheet" href="__STATIC__/admin/layui/css/layui.css" />
+    <script src="__STATIC__/admin/layui/layui.js"></script>
+</head>
+<body>
+<div style="margin: 50px auto; width: 500px;">
+    <h1 style="margin: 10px auto; width: 500px; font-size: 20px; text-align: center">后台管理员登录</h1>
+    <form class="layui-form" action="" method="post">
+        <div class="layui-form-item">
+            <label class="layui-form-label">用户名</label>
+            <div class="layui-input-block">
+                <input type="text" name="username" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label">密码</label>
+            <div class="layui-input-block">
+                <input type="password" name="password" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" lay-submit lay-filter="formDemo">登录</button>
+            </div>
+        </div>
+    </form>
+
+    <script>
+        //Demo
+        layui.use('form', function(){
+            var form = layui.form;
+        });
+    </script>
+</div>
+</body>
+</html>

@@ -1,0 +1,54 @@
+{extend name='goods'/}
+
+{block name='content'}
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li>
+                <a href="{:url('index')}">栏目列表</a>
+            </li>
+            <li class="layui-this">
+                <a href="{:url('store')}">栏目添加</a>
+            </li>
+        </ul>
+        <div class="layui-tab-content">
+            <div style="padding: 15px;">
+                <form class="layui-form" action="" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">栏目名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">所属栏目</label>
+                        <div class="layui-input-block">
+                            <select name="pid" lay-verify="required">
+                                <option value="0">--顶级栏目--</option>
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">栏目排序</label>
+                        <div class="layui-input-block">
+                            <input type="number" name="sort" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="formDemo">添加</button>
+                        </div>
+                    </div>
+                </form>
+
+                <script>
+                    //Demo
+                    layui.use('form', function(){
+                        var form = layui.form;
+                    });
+                </script>
+
+            </div>
+{/block}

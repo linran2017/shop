@@ -1,0 +1,109 @@
+{extend name='websit'/}
+
+{block name='content'}
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">网站简介</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div style="padding: 15px;">
+                <form class="layui-form" action="" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">公司名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" autocomplete="off" value="{$data['name']}" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-upload">
+                        <label class="layui-form-label">公司图标</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="logo" autocomplete="off" value="{$data['logo']}" class="layui-input">
+                            <button type="button" class="layui-btn" id="test1">上传图片</button>
+                            <div class="layui-upload-list">
+                                <img src="{$data['logo']}" style="width: 100px; height: 50px;" class="layui-upload-img" id="demo1">
+                                <p id="demoText"></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">公司简介</label>
+                        <div class="layui-input-block">
+                            <textarea name="introduce" class="layui-textarea">{$data['introduce']}</textarea>
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">地址</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="address" autocomplete="off" value="{$data['address']}" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">电话</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="tel" autocomplete="off" value="{$data['tel']}" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">邮箱</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="email" autocomplete="off" value="{$data['email']}" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">版权</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="copyright"autocomplete="off" value="{$data['copyright']}" class="layui-input">
+                        </div>
+                    </div>
+                    <input type="hidden" name="id" value="1" />
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="formDemo">保存</button>
+                        </div>
+                    </div>
+                </form>
+
+                <script>
+                    //Demo
+                    layui.use(['form','upload'], function(){
+                        var form = layui.form;
+                        var upload=layui.upload;
+                        var $ = layui.jquery;
+
+                        //普通图片上传
+                        var uploadInst = upload.render({
+                            elem: '#test1'
+                            ,url: "{:url('system/component/upload')}"
+                            ,before: function(obj){
+                                //预读本地文件示例，不支持ie8
+                                obj.preview(function(index, file, result){
+                                    $('#demo1').attr('src', result); //图片链接（base64）
+                                });
+                            }
+                            ,done: function(res){
+                                //如果上传失败
+                                if(res.code > 0){
+                                    return layer.msg('上传失败');
+                                }
+                                console.log(res);
+                                //上传成功
+                                $('.layui-upload').find('input').val(res.message);
+                            }
+                            ,error: function(){
+                                //演示失败状态，并实现重传
+                                var demoText = $('#demoText');
+                                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                                demoText.find('.demo-reload').on('click', function(){
+                                    uploadInst.upload();
+                                });
+                            }
+                        });
+                    });
+                </script>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}

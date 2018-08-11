@@ -1,0 +1,142 @@
+{extend name='base'/}
+{block name='center'}
+<!--新品上市-->
+
+<!--新品上市结束-->
+<div class="row rec">
+
+    <div class="medium-12 columns">
+        <div class="main-title settings-main_border">
+
+
+            <h3 class="settings-text_color">
+               新品上市
+                <span class="settings-desc_color"> / NEW PRODUCTS</span>
+            </h3>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="medium-12 columns lazyload_scope">
+
+        {foreach name='newGoods' item='v'}
+        <div class="medium-4 columns item">
+            <div class="item-pic">
+                <a href="{:url('index/content/index',['goods_id'=>$v['goods_id']])}" target="_self" title="{$v['goods_title']}">
+                    <img style="width: 700px; height: 700px;" class=" " src="{$v['goods_master']}"  data-yhsdimgload="true">
+                </a>
+            </div>
+            <div class="item-info">
+                <p class="item-name">
+                    <a class="settings-text_color" href="{:url('index/content/index',['goods_id'=>$v['goods_id']])}" title="{$v['goods_title']}" target="_self">{$v['goods_title']}</a>
+                </p>
+                <p class="item-price">
+                    <span class="settings-price_color">¥{$v['goods_price']}</span>
+
+                </p>
+            </div>
+        </div>
+        {/foreach}
+
+    </div>
+
+
+</div>
+<!--推荐商品-->
+<div class="row rec">
+
+    <div class="medium-12 columns">
+        <div class="main-title settings-main_border">
+
+
+            <h3 class="settings-text_color">
+               商品推荐
+                <span class="settings-desc_color"> / COMMEND PRODUCTS</span>
+            </h3>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="medium-12 columns lazyload_scope">
+
+        {foreach name='commendGoods' item='v'}
+        <div class="medium-4 columns item">
+            <div class="item-pic">
+                <a href="{:url('index/content/index',['goods_id'=>$v['goods_id']])}" target="_self" title="{$v['goods_title']}">
+                    <img style="width: 700px; height: 700px;" class=" " src="{$v['goods_master']}"  data-yhsdimgload="true">
+                </a>
+            </div>
+            <div class="item-info">
+                <p class="item-name">
+                    <a class="settings-text_color" href="{:url('index/content/index',['goods_id'=>$v['goods_id']])}" title="{$v['goods_title']}" target="_self">{$v['goods_title']}</a>
+                </p>
+                <p class="item-price">
+                    <span class="settings-price_color">¥{$v['goods_price']}</span>
+
+                </p>
+            </div>
+        </div>
+        {/foreach}
+
+    </div>
+
+
+</div>
+<!--推荐商品结束-->
+
+<!--热卖商品-->
+<div class="row rec">
+
+    <div class="medium-12 columns">
+        <div class="main-title settings-main_border">
+
+
+            <h3 class="settings-text_color">
+                商品热卖
+                <span class="settings-desc_color"> / HOT PRODUCTS</span>
+            </h3>
+
+        </div>
+
+
+    </div>
+
+
+
+    <div class="medium-12 columns lazyload_scope">
+
+        {foreach name='hotGoods' item='v'}
+        <div class="medium-4 columns item">
+            <div class="item-pic">
+                <a href="{:url('index/content/index',['goods_id'=>$v['goods_id']])}" target="_self" title="{$v['goods_title']}">
+                    <img style="width: 700px; height: 700px;" class=" " src="{$v['goods_master']}"  data-yhsdimgload="true">
+                </a>
+            </div>
+            <div class="item-info">
+                <p class="item-name">
+                    <a class="settings-text_color" href="{:url('index/content/index',['goods_id'=>$v['goods_id']])}" title="{$v['goods_title']}" target="_self">{$v['goods_title']}</a>
+                </p>
+                <p class="item-price">
+                    <span class="settings-price_color">¥{$v['goods_price']}</span>
+
+                </p>
+            </div>
+        </div>
+        {/foreach}
+
+    </div>
+
+
+</div>
+<!--热卖商品结束-->
+
+
+{/block}

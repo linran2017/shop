@@ -1,0 +1,66 @@
+{extend name='auth'/}
+
+{block name='content'}
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li>
+                <a href="{:url('index')}">用户组列表</a>
+            </li>
+            <li class="layui-this">
+                <a href="{:url('store')}">用户组添加</a>
+            </li>
+        </ul>
+        <div class="layui-tab-content">
+            <div style="padding: 15px;">
+                <form class="layui-form" action="" enctype="multipart/form-data" method="post">
+                    <fieldset class="layui-elem-field">
+                        <legend>用户组管理</legend>
+                        <div class="layui-field-box">
+                            <div class="layui-form-item">
+                                <label class="layui-form-label">用户名</label>
+                                <div class="layui-input-block">
+                                    <input type="text" name="title" autocomplete="off" class="layui-input">
+                                </div>
+                            </div>
+                        </div>
+                    </fieldset>
+                    <fieldset class="layui-elem-field">
+                        <legend>分配权限</legend>
+                        <div class="layui-field-box">
+                            {foreach name='rules' key='k' item='v'}
+                            <fieldset class="layui-elem-field father-all">
+                                <legend>{$k}</legend>
+                                <div class="layui-field-box">
+
+                                    <div class="layui-form-item">
+                                        <div class="layui-input-block">
+                                            {foreach name="v" item='vo'}
+                                            <input type="checkbox" value="{$vo['id']}" name="rules[]" title="{$vo['title']}">
+                                            {/foreach}
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </fieldset>
+                            {/foreach}
+                        </div>
+                    </fieldset>
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="formDemo">添加</button>
+                        </div>
+                    </div>
+                </form>
+
+                <script>
+                    //Demo
+                    layui.use('form', function(){
+                        var form = layui.form;
+                    });
+
+                </script>
+
+            </div>
+{/block}

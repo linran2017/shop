@@ -1,0 +1,66 @@
+{extend name='goods'/}
+
+{block name='content'}
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <a href="{:url('index')}">栏目列表</a>
+            </li>
+            <li>
+                <a href="{:url('store')}">栏目添加</a>
+            </li>
+        </ul>
+        <div class="layui-tab-content">
+            <div style="padding: 15px;">
+                <table class="layui-table">
+
+                    <thead>
+                    <tr>
+                        <th>编号</th>
+                        <th>栏目名称</th>
+                        <th>栏目排序</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name='data' item='v'}
+                    <tr>
+                        <td>{$v['id']}</td>
+                        <td>{$v['_name']}</td>
+                        <td>{$v['sort']}</td>
+                        <td>
+                            <a href="{:url('admin/category/addson',['id'=>$v['id']])}" class="layui-btn layui-btn-normal">添加子类</a>
+                            <a href="{:url('admin/category/edit',['id'=>$v['id']])}" class="layui-btn">编辑</a>
+                            <a href="javascript:;" onclick="del({$v['id']})" class="layui-btn layui-btn-danger">删除</a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <script>
+                    function del(id) {
+                        //alert(id);
+                        layui.use('layer', function(){
+                            function del(id) {
+                                alert(1);
+                            }
+                            var layer = layui.layer;
+
+                                /*layer.confirm('is not?', {icon: 3, title:'删除提示'}, function(index){
+                                    //do something
+                                    location.href("{:url('del')}"+'?id='+id)
+                                    layer.close(index);
+                                });*/
+//eg2
+                                layer.confirm('确定要删除吗?', function(index){
+                                    //do something
+                                    location.href="{:url('del')}"+'?id='+id;
+                                    layer.close(index);
+                                });
+                        });
+                    }
+                </script>
+            </div>
+{/block}

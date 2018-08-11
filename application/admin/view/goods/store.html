@@ -1,0 +1,173 @@
+{extend name='goods'/}
+
+{block name='content'}
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li>
+                <a href="{:url('index')}">商品列表</a>
+            </li>
+            <li class="layui-this">
+                <a href="{:url('store')}">商品添加</a>
+            </li>
+        </ul>
+        <div class="layui-tab-content">
+
+                <!--主体内容开始-->
+            <div style="padding: 15px;">
+                <!--表单开始-->
+                <form class="layui-form" action="" method="post">
+
+
+
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">商品名称</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="goods_title" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">所属栏目</label>
+                                    <div class="layui-input-block">
+                                        <select style="display: inline-block" name="goods_cid" class="layui-input" lay-verify="required">
+                                            {foreach name='category' item='v'}
+                                            <option value="{$v['id']}">{$v['_name']}</option>
+                                            {/foreach}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">商品品牌</label>
+                                    <div class="layui-input-block">
+                                        {foreach name='brand' item='v'}
+                                        <input type="radio" name="goods_bid" value="{$v['id']}" title="{$v['name']}">
+                                        {/foreach}
+                                    </div>
+                                </div>
+                                <div class="layui-upload">
+                                    <label class="layui-form-label">商品主图</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="goods_master" autocomplete="off" value="" class="layui-input">
+                                        <button type="button" class="layui-btn" id="test1">上传图片</button>
+                                        <div class="layui-upload-list">
+                                            <img src="" style="width: 100px; height: 100px;" class="layui-upload-img" id="demo1">
+                                            <p id="demoText"></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">商品价格</label>
+                                    <div class="layui-input-block">
+                                        <input type="text" name="goods_price" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label">商品排序</label>
+                                    <div class="layui-input-block">
+                                        <input type="number" name="goods_sort" autocomplete="off" class="layui-input">
+                                    </div>
+                                </div>
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">商品介绍</label>
+                        <div class="layui-input-block" style="display:block;">
+                            <textarea class="layui-textarea" name="goods_introduce" lay-verify="content" id="LAY_demo_editor"></textarea>
+                        </div>
+                    </div>
+                               <div class="layui-form-item">
+                                   <label class="layui-form-label">是否推荐</label>
+                                   <div class="layui-input-block">
+                                       <input type="radio" value="1" name="goods_commend" title="是" checked>
+                                       <input type="radio" value="0" name="goods_commend" title="否">
+                                   </div>
+                               </div>
+                               <div class="layui-form-item">
+                        <label class="layui-form-label">是否热门</label>
+                        <div class="layui-input-block">
+                            <input type="radio" value="1" name="goods_hot" title="是" checked>
+                            <input type="radio" value="0" name="goods_hot" title="否">
+                        </div>
+                              </div>
+                        <!--商品信息结束-->
+
+                <div class="layui-form-item" style="float: right">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" lay-submit lay-filter="formDemo">添加</button>
+                    </div>
+                </div>
+            </form>
+            </div>
+                <!--主体内容结束-->
+
+            <!--表单结束-->
+        </div>
+        <script>
+            //Demo
+            layui.use(['form','upload', 'layedit'], function(){
+                var form = layui.form;
+                var upload=layui.upload;
+                var layedit = layui.layedit
+                var $ = layui.jquery;
+                //编辑器
+                //创建一个编辑器
+                var editIndex = layedit.build('LAY_demo_editor');
+
+                //自定义验证规则
+                form.verify({
+                    title: function(value){
+                        if(value.length < 5){
+                            return '标题至少得5个字符啊';
+                        }
+                    }
+                    ,pass: [/(.+){6,12}$/, '密码必须6到12位']
+                    ,content: function(value){
+                        layedit.sync(editIndex);
+                    }
+                });
+
+                //监听指定开关
+                form.on('switch(switchTest)', function(data){
+                    layer.msg('开关checked：'+ (this.checked ? 'true' : 'false'), {
+                        offset: '6px'
+                    });
+                    layer.tips('温馨提示：请注意开关状态的文字可以随意定义，而不仅仅是ON|OFF', data.othis)
+                });
+
+                //监听提交
+                form.on('submit(demo1)', function(data){
+                    layer.alert(JSON.stringify(data.field), {
+                        title: '最终的提交信息'
+                    })
+                    return false;
+                });
+                //普通图片上传
+                var uploadInst = upload.render({
+                    elem: '#test1'
+                    ,url: "{:url('system/component/upload')}"
+                    ,before: function(obj){
+                        //预读本地文件示例，不支持ie8
+                        obj.preview(function(index, file, result){
+                            $('#demo1').attr('src', result); //图片链接（base64）
+                        });
+                    }
+                    ,done: function(res){
+                        //如果上传失败
+                        if(res.code > 0){
+                            return layer.msg('上传失败');
+                        }
+                        console.log(res);
+                        //上传成功
+                        $('.layui-upload').find('input').val(res.message);
+                    }
+                    ,error: function(){
+                        //演示失败状态，并实现重传
+                        var demoText = $('#demoText');
+                        demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>');
+                        demoText.find('.demo-reload').on('click', function(){
+                            uploadInst.upload();
+                        });
+                    }
+                });
+            });
+        </script>
+{/block}

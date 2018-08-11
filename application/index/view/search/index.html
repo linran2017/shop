@@ -1,0 +1,67 @@
+{extend name='base'/}
+{block name='center'/}
+<div class="row">
+    <!--页签-->
+    <div class="medium-12 columns show-for-large-only" role="navigation">
+        <ul class="breadcrumbs clearfix settings-main_border">
+            <li><a href="/">首页</a></li>
+            <li class="current">搜索“{$page}”的结果</li>
+        </ul>
+    </div>
+    <!--页签结束-->
+    <!--搜索商品-->
+    <div class="larger-12 columns">
+        <ul class="product_list lazyload_scope">
+            {if condition='$data'}
+            {foreach name='data' item='v'}
+            <li class="medium-3 columns">
+                <div class="item true">
+                    <div class="item-pic">
+                        <a href="{:url('index/content/index',['goods_id'=>$v['goods_id']])}" taget="_self" title="{$v['goods_title']}">
+                            <img class=" " src="{$v['goods_master']}" alt="{$v['goods_title']}">
+
+                        </a>
+
+                    </div>
+                    <div class="item-info">
+                        <p class="item-name">
+                            <a class="settings-text_color" href="{:url('index/content/index',['goods_id'=>$v['goods_id']])}" title="{$v['goods_title']}" target="_self">{$v['goods_title']}</a>
+                        </p>
+                        <p class="item-price">
+                            <span class="settings-price_color">¥{$v['goods_price']}</span>
+
+                        </p>
+
+
+                    </div>
+                </div>
+            </li>
+            {/foreach}
+            {else /}
+            <div class="result" style="color: #666; font-size: 14px; width: 100%; text-align: center">抱歉~我们找不到对应的商品，请您继续
+                <a href="/">逛逛</a>
+                吧。</div>
+
+            {/if}
+        </ul>
+        <style>
+            .result a{
+                background: #9dafb8;
+                cursor: pointer;
+                width: 54px;
+                height: 28px;
+                line-height: 28px;
+                text-align: center;
+                display: inline-block;
+                color: white;
+            }
+            .result a:hover{
+                opacity: 0.8;
+            }
+        </style>
+    </div>
+    <!--搜索商品结束-->
+
+
+</div>
+{/block}

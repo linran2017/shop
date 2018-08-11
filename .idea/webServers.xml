@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="e021b028-b0d9-4b3e-b11e-cd4f2d3bd995" name="shop" url="http://shoping.linran136.com">
+        <fileTransfer host="shoping.linran136.com" port="21">
+          <advancedOptions>
+            <advancedOptions compatibilityMode="true" controlEncoding="UTF-8" dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="21" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

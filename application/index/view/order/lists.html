@@ -1,0 +1,484 @@
+{extend name='base'/}
+{block name='center'}
+<div id="content_for_layout" class="yhsd-base"><div class="wrapper">
+    <div class="cont account">
+        <dl class="account-sideNav yhsd-form-background yhsd-main-border">
+            <dd>
+                <a href="javascript:;" class="yhsd-font-desc">个人中心</a>
+            </dd>
+            <dd class="selected">
+                <a href="{:url('index/order/lists')}" class="yhsd-font-desc">我的订单</a>
+            </dd>
+            <dd>
+                <a href="{:url('index/address/index')}" class="yhsd-font-desc">收货地址</a>
+            </dd>
+        </dl>
+        <div class="account-sideCont">
+            <div class="account-sideCont-block account-orderList yhsd-main-border">
+                <h3 class="yhsd-font-title yhsd-form-background">我的订单</h3>
+                <ul class="account-tags yhsd-form-background yhsd-main-border" id="yhsd-orderList-nav">
+                    <li  data-type="all" class="order-tab selected">
+                        <a href="javascript:void(0);" class="yhsd-font-title">全部订单<span id="order-nav-all" class="yhsd-font-desc">{:count($allOrder)}</span>
+                        </a>
+                    </li>
+                    <li data-type="pay" class="order-tab">
+                        <a href="javascript:void(0);" class="yhsd-font-title">待付款<span id="order-nav-topay" class="yhsd-font-desc">{:count($unpayOrder)}</span></a>
+                    </li>
+                    <li data-type="confirm" class="order-tab">
+                        <a href="javascript:void(0);" class="yhsd-font-title">已付款<span id="order-nav-torec" class="yhsd-font-desc">{:count($payOrder)}</span></a>
+                    </li>
+                </ul>
+                <style>
+                    *{
+                        margin: 0;
+                        padding: 0;
+                    }
+                    .order-lists{
+                        width: 946px;
+                    }
+                    .order-lists li{
+                        border-top: 1px solid #ececec;
+                        border-bottom: 1px solid #ececec;
+                        margin-bottom: 5px;
+                        width: 946px;
+                        height: 286px;
+                    }
+                    .order-lists:last-of-type{
+                        margin-bottom: 0;
+                    }
+                    .order-lists li .order-hander{
+                        background: #cfd8dc;
+                        height: 45px;
+                        width: 948px;
+                        position: relative;
+                    }
+                    .order-lists li .order-hander .create-time{
+                        position: absolute;
+                        display: block;
+                        height: 45px;
+                        top: 0;
+                        left: 5px;
+                        line-height: 45px;
+                        font-size: 14px;
+                        color: #0a0a0a;
+                    }
+                    .order-lists li .order-hander .create-time b{
+                        font-weight: 700;
+                    }
+                    .order-lists li .order-hander .code{
+                        position: absolute;
+                        display: block;
+                        height: 45px;
+                        top: 0;
+                        right: 5px;
+                        line-height: 45px;
+                        font-size: 14px;
+                        color: #333;
+                    }
+                    .order-lists li .order-content{
+                        width: 946px;
+
+                    }
+                    .order-lists li .order-content .left{
+                        width: 700px;
+                        border-right: 1px solid #ececec;
+                        float: left;
+                        height: 241px;
+                    }
+                    .order-lists li .order-content .left ul li{
+                        height: 120px !important;
+                        width: 700px;
+                        border: none;
+                        border-bottom:1px #ececec solid ;
+                        position: relative;
+                    }
+                    .order-lists li .order-content .left ul li:last-of-type{
+                        border-bottom: none;
+                    }
+                    .order-lists li .order-content .left ul li .img{
+                        position: absolute;
+                        left:5px;
+                        top: 20px;
+                    }
+                    .order-lists li .order-content .left ul li .img img{
+                        width: 80px !important;
+                        height: 80px !important;
+                    }
+                    .order-lists li .order-content .left ul li .goods{
+                        position: absolute;
+                        top:20px;
+                        left:100px;
+                        width: 340px;
+
+                    }
+                    .order-lists li .order-content .left ul li .goods .title{
+                        color: #0a0a0a;
+                        font-size: 14px;
+                        width: 340px;
+                        position: absolute;
+                        left: 0;
+                        top: 0;
+                    }
+                    .order-lists li .order-content .left ul li .goods .title:hover{
+                        color: #999;
+                        cursor: pointer;
+                    }
+                    .order-lists li .order-content .left ul li .goods .attr{
+                        color: #999;
+                        font-size: 12px;
+                        width: 340px;
+                        position: absolute;
+                        left: 0;
+                        top: 50px;
+                    }
+                    .order-lists li .order-content .left ul li .price{
+                        position: absolute;
+                        top:20px;
+                        right: 110px;
+                        width: 150px;
+                    }
+                    .order-lists li .order-content .left ul li .price span{
+                        position: absolute;
+                        top:30px;
+                        left:0;
+                        font-size: 14px;
+                        color: #0a0a0a;
+                    }
+                    .order-lists li .order-content .left ul li .number{
+                        position: absolute;
+                        top:20px;
+                        right: 0;
+                        width: 110px;
+                    }
+                    .order-lists li .order-content .left ul li .number span{
+                        position: absolute;
+                        top:30px;
+                        left:0;
+                        font-size: 14px;
+                        color: #0a0a0a;
+                    }
+                    .order-lists li .order-content .center{
+                        width: 121px;
+                        border-right: 1px solid #ececec;
+                        float: left;
+                        position: relative;
+                        height: 241px;
+                    }
+                    .order-lists li .order-content .center span{
+                        position: absolute;
+                        top: 30px;
+                        width: 121px;
+                        text-align: center;
+                        color: #0a0a0a;
+                        font-size: 14px;
+                    }
+                    .order-lists li .order-content .center b{
+                        position: absolute;
+                        top: 50px;
+                        color: #f44;
+                        font-size: 16px;
+                        width: 121px;
+                        text-align: center;
+                    }
+                    .order-lists li .order-content .right{
+                        width: 118px;
+                        float: left;
+                        position: relative;
+                        height: 241px;
+                    }
+                    .order-lists li .order-content .right .order-btn{
+                        display: block !important;
+                        width: 74px;
+                        height: 28px;
+                        line-height: 28px;
+                        text-align: center;
+                        font-size: 14px;
+                        color: white;
+                        background: #9dafb8;
+                        cursor: pointer;
+                        position: absolute;
+                        top: 20px;
+                        left:22px;
+                        border-radius: 3px;
+                    }
+                    .order-lists li .order-content .right .order-btn:hover{
+                        opacity: 0.8;
+                    }
+                    .order-lists li .order-content .right .order-del{
+                        display: block !important;
+                        width: 74px;
+                        height: 28px;
+                        line-height: 28px;
+                        text-align: center;
+                        font-size: 14px;
+                        color: white;
+                        background: #9dafb8;
+                        cursor: pointer;
+                        position: absolute;
+                        top: 80px;
+                        left:22px;
+                        border-radius: 3px;
+                    }
+                    .order-lists li .order-content .right .order-del:hover{
+                        opacity: 0.8;
+                    }
+                    .order-lists li .order-content .right .order-wait{
+                        display: block !important;
+                        width: 74px;
+                        height: 28px;
+                        line-height: 28px;
+                        text-align: center;
+                        font-size: 14px;
+                        color: #0a0a0a;
+                        position: absolute;
+                        top: 30px;
+                        left:22px;
+                    }
+                    .order-lists li .order-content .right .order-detail{
+                        display: block !important;
+                        z-index: 999999999;
+                        width: 74px;
+                        height: 28px;
+                        line-height: 28px;
+                        text-align: center;
+                        font-size: 14px;
+                        color: #0a0a0a;
+                        cursor: pointer;
+                        position: absolute;
+                        top:50px;
+                        left:22px;
+                    }
+                    .order-lists li .order-content .right .order-detail:hover{
+                        color: #999;;
+                    }
+                </style>
+                <!--全部订单-->
+                <div class="orderlists">
+                {if condition='$allOrder'}
+
+                <ul id="yhsd-orderList" class="order-lists account-orderList-list">
+                    {foreach name='allOrder' item='v'}
+                    <li>
+                        <div class="order-hander">
+                            <span class="create-time">创建时间：<b>{:date('20y年m月d日',$v['order_createtime'])}</b></span>
+                            <span class="code">订单编号：{$v['order_code']}</span>
+                        </div>
+                        <div class="order-content">
+                            <div class="left">
+                                <ul>
+                                    {foreach name="v['attr']" item='vi'}
+                                    <li>
+                                        <div class="img">
+                                            <img src="{$vi['attr_img']}" />
+                                        </div>
+                                        <div class="goods">
+                                            <a href="{:url('index/content/index',['goods_id'=>$vi['goods_id']])}" target="_blank" class="title">{$vi['goods_title']}</a>
+                                            <span class="attr">属性：{$vi['attr_name']}</span>
+                                        </div>
+                                        <div class="price">
+                                            <span>￥{$vi['goods_price']}</span>
+                                        </div>
+                                        <div class="number">
+                                            <span>×{$vi['buy_attrnum']}</span>
+                                        </div>
+                                    </li>
+                                    {/foreach}
+                                </ul>
+                            </div>
+                            <div class="center">
+                                <span>合计</span>
+                                <b>￥{$v['order_totalprice']}</b>
+                            </div>
+                            <div class="right">
+                                {if condition="$v['order_pay']"}
+                                <span class="order-wait">待发货</span>
+                                {else /}
+                                <a href="{:url('index/pay/index',['order_id'=>$v['order_id']])}" class="order-btn">去付款</a>
+                                <a class="order-del">取消订单</a>
+                                <input type="hidden" name="id" value="{$v['order_id']}" />
+                                {/if}
+                                <a class="order-detail" href="{:url('index/order/detail',['order_id'=>$v['order_id']])}" target="_blank">订单详情</a>
+                            </div>
+                        </div>
+                    </li>
+                    {/foreach}
+                </ul>
+                {else /}
+                <ul id="yhsd-orderList" class="account-orderList-list">
+                    <li class="empty yhsd-main-border yhsd-form-background">
+                        <div class="list-title yhsd-font-text">未找到相关订单</div>
+                    </li>
+                </ul>
+                {/if}
+                </div>
+                <!--全部订单结束-->
+                <!--未付款订单-->
+                <div class="orderlists" style="display: none">
+                    {if condition='$unpayOrder'}
+
+                    <ul id="yhsd-orderList" class="order-lists account-orderList-list">
+                        {foreach name='unpayOrder' item='v'}
+                        <li>
+                            <div class="order-hander">
+                                <span class="create-time">创建时间：<b>{:date('20y年m月d日',$v['order_createtime'])}</b></span>
+                                <span class="code">订单编号：{$v['order_code']}</span>
+                            </div>
+                            <div class="order-content">
+                                <div class="left">
+                                    <ul>
+                                        {foreach name="v['attr']" item='vi'}
+                                        <li>
+                                            <div class="img">
+                                                <img src="{$vi['attr_img']}" />
+                                            </div>
+                                            <div class="goods">
+                                                <a href="{:url('index/content/index',['goods_id'=>$vi['goods_id']])}" target="_blank" class="title">{$vi['goods_title']}</a>
+                                                <span class="attr">属性：{$vi['attr_name']}</span>
+                                            </div>
+                                            <div class="price">
+                                                <span>￥{$vi['goods_price']}</span>
+                                            </div>
+                                            <div class="number">
+                                                <span>×{$vi['buy_attrnum']}</span>
+                                            </div>
+                                        </li>
+                                        {/foreach}
+                                    </ul>
+                                </div>
+                                <div class="center">
+                                    <span>合计</span>
+                                    <b>￥{$v['order_totalprice']}</b>
+                                </div>
+                                <div class="right">
+                                    <a href="{:url('index/pay/index',['order_id'=>$v['order_id']])}" class="order-btn">去付款</a>
+                                    <a class="order-del">取消订单</a>
+                                    <input type="hidden" name="id" value="{$v['order_id']}" />
+                                    <a class="order-detail" href="{:url('index/order/detail',['order_id'=>$v['order_id']])}" target="_blank">订单详情</a>
+                                </div>
+                            </div>
+                        </li>
+                        {/foreach}
+                    </ul>
+                    {else /}
+                    <ul id="yhsd-orderList" class="account-orderList-list">
+                        <li class="empty yhsd-main-border yhsd-form-background">
+                            <div class="list-title yhsd-font-text">未找到相关订单</div>
+                        </li>
+                    </ul>
+                    {/if}
+                </div>
+                <!--未付款订单结束-->
+                <!--已付款订单-->
+                <div class="orderlists" style="display: none;">
+                    {if condition='$payOrder'}
+
+                    <ul id="yhsd-orderList" class="order-lists account-orderList-list">
+                        {foreach name='payOrder' item='v'}
+                        <li>
+                            <div class="order-hander">
+                                <span class="create-time">创建时间：<b>{:date('20y年m月d日',$v['order_createtime'])}</b></span>
+                                <span class="code">订单编号：{$v['order_code']}</span>
+                            </div>
+                            <div class="order-content">
+                                <div class="left">
+                                    <ul>
+                                        {foreach name="v['attr']" item='vi'}
+                                        <li>
+                                            <div class="img">
+                                                <img src="{$vi['attr_img']}" />
+                                            </div>
+                                            <div class="goods">
+                                                <a href="{:url('index/content/index',['goods_id'=>$vi['goods_id']])}" target="_blank" class="title">{$vi['goods_title']}</a>
+                                                <span class="attr">属性：{$vi['attr_name']}</span>
+                                            </div>
+                                            <div class="price">
+                                                <span>￥{$vi['goods_price']}</span>
+                                            </div>
+                                            <div class="number">
+                                                <span>×{$vi['buy_attrnum']}</span>
+                                            </div>
+                                        </li>
+                                        {/foreach}
+                                    </ul>
+                                </div>
+                                <div class="center">
+                                    <span>合计</span>
+                                    <b>￥{$v['order_totalprice']}</b>
+                                </div>
+                                <div class="right">
+                                    <span class="order-wait">待发货</span>
+
+                                    <a class="order-detail" href="{:url('index/order/detail',['order_id'=>$v['order_id']])}" target="_blank">订单详情</a>
+                                </div>
+                            </div>
+                        </li>
+                        {/foreach}
+                    </ul>
+                    {else /}
+                    <ul id="yhsd-orderList" class="account-orderList-list">
+                        <li class="empty yhsd-main-border yhsd-form-background">
+                            <div class="list-title yhsd-font-text">未找到相关订单</div>
+                        </li>
+                    </ul>
+                    {/if}
+                </div>
+                <!--已付款订单结束-->
+            </div>
+        </div>
+    </div>
+    <div class="all-cover" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65);">
+        <!--确定删除订单窗口-->
+        <div class="yhsd-popup del del-win" id="yhsd-modal" style="display: none; margin-left: -295px; margin-top: -103.5px;">
+            <h3 class="yhsd-font-title">确定要删除此订单吗？</h3>
+            <div class="box">
+                <div class="title yhsd-font-text">确定要删除此订单吗？</div>
+                <div class="ctrl-btns">
+                    <button class="btn btn-primary btn-md del-confirm" id="yhsd-address-delete-submit" type="button">确定</button>
+                    <button class="btn btn-secondary btn-md yhsd-popup-close del-close" type="button">取消</button>
+                </div>
+            </div>
+        </div>
+        <!--确定删除订单结束-->
+    </div>
+
+</div>
+</div>
+<script>
+    //设置元素高度
+function height() {
+    for(var i=0;i<$('.order-lists li').length;i++){
+        var h=$('.order-lists li').eq(i).find('.order-content .left ul li').length;
+        $('.order-lists li').eq(i).css({'height':(h*120+h-1+45)+'px'});
+        $('.order-lists li').eq(i).find('.order-content .left').css({'height':(h*120+h-1)+'px'});
+        $('.order-lists li').eq(i).find('.order-content .center').css({'height':(h*120+h-1)+'px'});
+        $('.order-lists li').eq(i).find('.order-content .right').css({'height':(h*120+h-1)+'px'});
+        $('.order-lists li').eq(i).find('.order-content').css({'height':(h*120+h-1)+'px'});
+        $('.order-lists li').eq(i).find('.order-content .left ul li').css({'float':'left'})
+    }
+}
+height();
+
+//删除订单窗口隐藏
+    $('.order-del').click(function () {
+        id=Number($(this).siblings('input').val());
+        //alert(id);
+        $('.all-cover').show().css({'z-index':'9'});
+        $('.del-win').show().css({'position':'fixed','top':'50%','left':'50%'});
+    })
+    //删除订单常窗口隐藏
+    $('.del-close').click(function () {
+        $('.all-cover').hide();
+        $('.del-win').hide();
+    })
+    //确定删除订单
+    $('.del-confirm').click(function () {
+        location.href="{:url('index/order/orderdel')}"+'?order_id='+id;
+    })
+    //订单tab切换
+    $('.order-tab').click(function () {
+        $(this).addClass('selected').siblings('.order-tab').removeClass('selected');
+        var e=$(this).index();
+        $('.orderlists').eq(e).show().siblings('.orderlists').hide();
+    })
+</script>
+{/block}

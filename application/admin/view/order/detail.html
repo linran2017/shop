@@ -1,0 +1,67 @@
+{extend name='order'/}
+
+{block name='content'}
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <a href="{:url('detail')}">订单详情</a>
+            </li>
+        </ul>
+        <div class="layui-tab-content">
+            <div style="padding: 15px;">
+                <div class="layui-collapse">
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">订单编号：{$orderData['order_code']}</h2>
+                        <div class="layui-colla-content layui-show">
+                            <div>买家：{$orderData['username']}</div>
+                            <div>收货地址：{$orderData['address_persone']} {$orderData['address_tel']} {$orderData['address_detail']} {$orderData['address_code']}</div>
+                            <div>买家留言：{$orderData['order_note']}</div>
+                            <div>创建时间：{:date('20y-m-d H:i:s',$orderData['order_createtime'])}</div>
+                            <div>订单状态：
+                                {if condition="$orderData['order_pay']"}
+                                已付款
+                                {else /}
+                                未付款
+                                {/if}
+                            </div>
+                            {if condition="$orderData['order_pay']"}
+                            <div>支付时间：{:date('20y-m-d H:i:s',$orderData['order_paytime'])}</div>
+                            {/if}
+                            <table class="layui-table">
+
+                                <thead>
+                                <tr>
+                                    <th>商品主图</th>
+                                    <th>商品名称</th>
+                                    <th>商品属性</th>
+                                    <th>单价</th>
+                                    <th>数量</th>
+                                    <th>小计</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {foreach name="orderData['buy']" item='v'}
+                                <tr>
+                                    <td>
+                                        <img width="80" height="80" src="{$v['attr_img']}" />
+                                    </td>
+                                    <td>{$v['goods_title']}</td>
+                                    <td>{$v['attr_name']}</td>
+                                    <td>{$v['goods_price']}</td>
+                                    <td>￥{$v['buy_attrnum']}</td>
+                                    <td>￥{$v['subtotalprice']}</td>
+                                </tr>
+                                {/foreach}
+                                <tr>
+                                   <td colspan="6">
+                                       <h2 style="float: right; font-size: 16px; color: #f44; font-weight: 600;">总价：￥{$orderData['order_totalprice']}</h2>
+                                   </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+            </div>
+{/block}

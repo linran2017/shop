@@ -1,0 +1,19 @@
+{extend name='./static/admin/header.html'}
+{block name='left'}
+<div class="layui-side layui-bg-black">
+    <div class="layui-side-scroll">
+        <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+        <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+            <li class="layui-nav-item layui-nav-itemed">
+                <a class="" href="{:url('admin/admin/index')}">后台用户管理</a>
+            </li>
+            <li class="layui-nav-item layui-nav-itemed">
+                <a class="" href="{:url('admin/rule/index')}">规则管理</a>
+            </li>
+            <li class="layui-nav-item layui-nav-itemed">
+                <a class="" href="{:url('admin/group/index')}">用户组管理</a>
+            </li>
+        </ul>
+    </div>
+</div>
+{/block}

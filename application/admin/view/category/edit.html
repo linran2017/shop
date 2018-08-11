@@ -1,0 +1,55 @@
+{extend name='goods'/}
+
+{block name='content'}
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <a href="{:url('edit')}">编辑栏目</a>
+            </li>
+        </ul>
+        <div class="layui-tab-content">
+            <div style="padding: 15px;">
+                <form class="layui-form" action="" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">栏目名称</label>
+                        <div class="layui-input-block">
+                            <input type="text" name="name" value="{$oldData['name']}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">所属栏目</label>
+                        <div class="layui-input-block">
+                            <select name="pid" lay-verify="required">
+                                <option value="0">--顶级栏目--</option>
+                                {foreach name='categoryData' item='v'}
+                                <option {if condition="$oldData['pid']==$v['id']"}selected{/if} value="{$v['id']}">{$v['_name']}</option>
+                                {/foreach}
+                            </select>
+
+                        </div>
+                    </div>
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">栏目排序</label>
+                        <div class="layui-input-block">
+                            <input type="number" name="sort" value="{$oldData['sort']}" autocomplete="off" class="layui-input">
+                        </div>
+                    </div>
+                    <input type="hidden" name="id" value="{:input('param.id')}" />
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="formDemo">保存</button>
+                        </div>
+                    </div>
+                </form>
+
+                <script>
+                    //Demo
+                    layui.use('form', function(){
+                        var form = layui.form;
+                    });
+                </script>
+
+            </div>
+{/block}

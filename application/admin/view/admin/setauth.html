@@ -1,0 +1,39 @@
+{extend name='auth'/}
+
+{block name='content'}
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <a href="javascript:;">给管理员【{$username}】分配权限</a>
+            </li>
+        </ul>
+        <div class="layui-tab-content">
+            <div style="padding: 15px;">
+                <form class="layui-form" action="" enctype="multipart/form-data" method="post">
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">所属用户组</label>
+                        <div class="layui-input-block">
+                            {foreach name='groupData' item='v'}
+                            <input type="checkbox" {if condition="in_array($v['id'],$oldGroup)"} checked {/if} value="{$v['id']}" name="group_id[]" title="{$v['title']}">
+                            {/foreach}
+                        </div>
+                    </div>
+                    <input type="hidden" name="uid" value="{:input('param.id')}">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit lay-filter="formDemo">分配权限</button>
+                        </div>
+                    </div>
+                </form>
+
+                <script>
+                    //Demo
+                    layui.use('form', function(){
+                        var form = layui.form;
+                    });
+                </script>
+
+            </div>
+{/block}

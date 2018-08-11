@@ -1,0 +1,402 @@
+{extend name='base'/}
+{block name='center'}
+<div class="row product" id="app">
+    <!--页签-->
+    <div class="medium-12 columns show-for-large-only" role="navigation">
+        <ul class="breadcrumbs clearfix settings-main_border">
+            <li><a href="/">首页</a></li>
+            {if condition="$cateData['pid']==0"}
+            <li><a href="{:url('index/lists/index',['topcate_id'=>$cateData['id']])}">{$cateData['name']}</a></li>
+            {else /}
+            <li><a href="{:url('index/lists/index',['cate_id'=>$cateData['id']])}">{$cateData['name']}</a></li>
+            {/if}
+            <li class="disabled">商品详情</li>
+            <li class="current">{$goodsData['goods_title']}</li>
+        </ul>
+    </div>
+    <!--页签结束-->
+    <!--商品主图区域-->
+    <div class="large-5 columns">
+        <div class="pro-detail-gallery clearfix">
+
+            <div class="pro-detail-gallery-main settings-main_border">
+                <a class="bigpic" href="{$goodsData['goods_master']}" data-zoom-image="{$goodsData['goods_master']}">
+                    <img src="{$goodsData['goods_master']}" alt="{$goodsData['goods_title']}">
+                    <i class="tcfont icon-fangda"></i>
+                </a>
+
+               {foreach name='attrData' item='v'}
+                <a class="bigpic" style="display:none" href="{$v['attr_img']}" data-zoom-image="{$v['attr_img']}">
+                    <img src="{$v['attr_img']}" alt="{$goodsData['goods_title']}-{$v['attr_name']}">
+                    <i class="tcfont icon-fangda"></i>
+                </a>
+                {/foreach}
+
+            </div>
+            <!--小图区域-->
+
+            <div class="pro-detail-gallery-list">
+                <a href="javascript:void(0);" class="pro-detail-gallery-list-current samllpic">
+                    <img style="width: 75px; height: 75px;" src="{$goodsData['goods_master']}">
+                </a>
+                {foreach name='attrData' item='v'}
+                <a href="javascript:void(0);" class="samllpic">
+                   <img style=" width: 75px" height="75px" src="{$v['attr_img']}">
+                </a>
+                {/foreach}
+            </div>
+            <!--小图区域结束-->
+        </div>
+    </div>
+    <!--商品主图区域结束-->
+    <!--主图右侧区域-->
+    <div class="large-5 columns">
+        <div class="pro-detail-cnt settings-text_color" id="yhsd_variantSelector" data-variantid="4349373">
+            <h5 class="pro-detail-title settings-proTitle_color">{$goodsData['goods_title']}</h5>
+            <div class="pro-detail-price">
+                <strong class="pro-detail-uprice settings-price_color">
+                    <span class="pro_price_desc">特价</span>
+                    ¥<span id="yhsd_variantSelector_price">{$goodsData['goods_price']}</span>
+                </strong>
+
+
+            </div>
+
+            <div class="pro-detail-sub settings-main_border" id="yhsd_variantSelector_optionShow">
+                <div class="pro-detail-sub-each clearfix" data-position="1">
+                    <h3>属性</h3>
+                    <div class="pro-detail-sub-each-wrap clearfix">
+
+                      <!--  <a class="selected settings-optionSelected_background settings-optionSelected_border settings-optionSelected_color" data-option-id="47425" data-option-value="真皮" href="javascript:void(0);">真皮</a>-->
+                        {foreach name='attrData' item='v'}
+                        <a stock="{$v['attr_stock']}" id="{$v['attr_id']}" class="rideobutton unselected settings-optionUnSelected_background settings-optionUnSelected_border settings-optionUnSelected_color" data-option-id="47425" data-option-value="布艺">{$v['attr_name']}</a>
+                        {/foreach}
+                        <span class="num-warn" style="color: red;display: none; width: 90px; height: 36px; line-height: 36px; text-align: center; font-size: 14px; border: 1px solid #ececec;">请选择属性</span>
+                        <input type="hidden" name="shopcar_aid" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="pro-detail-quantity clearfix">
+                <h3>选择数量</h3>
+                <div class="pro-detail-sub-each-v clearfix">
+                    <div class="pro-detail-quantity-inner">
+                      <input class="float-left pro-detail-quantity-ipt text-center settings-main_border" name="number" type="number" value="1" step="1" id="yhsd_variantSelector_count">
+
+
+                        <div class="float-left pro-detail-quantity-desc settings-desc_color">
+                            <span>(库存<span class="stock" id="yhsd_variantSelector_stock">{$attrStock}</span>件)</span>
+                        </div>
+                    </div>
+                </div>
+                <span class="stock-warn" style="color: red;display: none; width: 150px; height: 36px; line-height: 36px; text-align: center; font-size: 14px; border: 1px solid #ececec;">商品数量不得大于库存</span>
+            </div>
+            <div class="pro-detail-addBtn clearfix">
+
+                <a class="float-left pro-detail-addCart settings-buyBtn_background settings-buyBtn_color" href="javascript:void(0);" id="yhsd_variantSelector_addCart"><i class="tcfont icon-cart"></i>加入购物车</a>
+
+                    <div class="c-qrcode pro-qrcode-img transition-all" data-url="http://knock.youhaovip.com/products/p000008">
+                        <canvas width="100" height="100"></canvas></div>
+                </a>
+                <div class="pro-detail-addSucc settings-main_border settings-text_color" id="yhsd_variantSelector_addSucc">
+                    <strong>添加成功！</strong>
+                    <a class="pro-detail-addSucc-goCart settings-buyBtn_background settings-buyBtn_color" href="{:url('index/cart/index')}">去购物车结算</a>
+                    <a class="pro-detail-addSucc-close settings-link_color" href="javascript:void(0);" id="yhsd_variantSelector_addSuccClose">关闭</a>
+                </div>
+            </div>
+            <div class="you_comment-target-stat"><div id="you_comment-stat" class="you_comment-stat" avalonctrl="you_comment-stat"><a href="http://knock.youhaovip.com/products/p000008#you_comment" class="you_comment-stat-item"><span class="you_comment-icon i_xing"></span><span>好评度 0%</span></a><a href="http://knock.youhaovip.com/products/p000008#you_comment" class="you_comment-stat-item"><span class="you_comment-icon i_xing"></span><span>评价 0</span></a><a href="http://knock.youhaovip.com/products/p000008#you_comment" class="you_comment-stat-item"><span class="you_comment-icon i_xing"></span><span>晒单 0</span></a></div></div>
+
+        </div>
+    </div>
+
+    <!-- 主图右侧区域结束-->
+
+    <!--商品推荐-->
+    <div class="large-2 columns">
+        <div class="same-brand-rec settings-main_border">
+            <h5 class="settings-text_color settings-main_border">商品推荐<span class="settings-desc_color"> Recommendation </span></h5>
+            <ul class="get-brand-item" data-vendor="林氏&amp;木业">
+                {foreach name='commendData' item='v'}
+                <li>
+                    <a class="item-pic" href="{:url('index/content/index',['goods_id'=>$v['goods_id']])}" target="_blank" title="{$v['goods_title']}">
+                        <img src="{$v['goods_master']}" alt="{$v['goods_title']}">
+                        <span class="price settings-price_color">¥{$v['goods_price']}</span>
+                    </a>
+                </li>
+                {/foreach}
+          </ul>
+        </div>
+    </div>
+    <!--商品推荐结束-->
+    <!--分类，品牌-->
+    <div class="large-3 columns">
+        <div class="siderbar">
+            <!--商品分类-->
+            <div class="pro-type-list">
+                <div class="main-title settings-main_border">
+
+
+                    <h3 class="settings-text_color">
+                        商品分类
+                        <span class="settings-desc_color"> / CATEGORIES</span>
+                    </h3>
+
+                </div>
+
+
+                <ul class="pro-list-cont get-type-list settings-main_border no-bullet">
+                    {foreach name='topcateData' item='v'}
+                    <li>
+                        <a class="settings-text_color" href="{:url('index/lists/index',['topcate_id'=>$v['id']])}"><i class="tcfont icon-arrow"></i>{$v['name']}</a>
+                    </li>
+                    {/foreach}
+                  </ul>
+            </div>
+            <!--商品分类结束-->
+            <!--商品品牌-->
+            <div class="pro-vendor-list">
+                <div class="main-title settings-main_border">
+
+
+                    <h3 class="settings-text_color">
+                        商品品牌
+                        <span class="settings-desc_color"> / BRANDS</span>
+                    </h3>
+
+                </div>
+
+
+                <ul class="pro-list-cont get-vendor-list settings-main_border no-bullet">
+                    {foreach name='brandData' item='v'}
+                    <li>
+                        <a class="settings-text_color" href="{:url('index/lists/index',['brand_id'=>$v['id']])}"><i class="tcfont icon-arrow"></i>{$v['name']}</a>
+                    </li>
+                    {/foreach}
+                </ul>
+            </div>
+            <!--商品品牌结束-->
+            <!--新品上市-->
+            <div class="pro-new-list">
+                <div class="main-title settings-main_border">
+
+
+                    <h3 class="settings-text_color">
+                        最新上架
+                        <span class="settings-desc_color"> / NEWEST</span>
+                    </h3>
+
+                </div>
+
+
+                <ul class="get-new-list settings-main_border no-bullet">
+                    {foreach name='newGoods' item='v'}
+                    <li class="clearfix">
+                        <a class="float-left item-pic" href="{:url('index/content/index',['goods_id'=>$v['goods_id']])}" target="_blank"><img src="{$v['goods_master']}" alt="{$v['goods_title']}"></a>
+                        <div class="float-right info">
+                            <a class="settings-text_color" href="{:url('index/content/index',['goods_id'=>$v['goods_id']])}" target="_blank">{$v['goods_title']}</a>
+                            <p class="price settings-price_color">¥{$v['goods_price']}</p>
+                        </div>
+                    </li>
+                    {/foreach}
+                </ul>
+            </div>
+            <!--新品上市结束-->
+        </div>
+    </div>
+    <!--分类，品牌结束-->
+    <!--商品简介-->
+    <div class="large-9 columns">
+        <div class="pro-desc">
+            <a name="detail"></a>
+            <div class="main-title settings-main_border">
+
+
+                <h3 class="settings-text_color">
+                    商品详情
+                    <span class="settings-desc_color"> / DETAILS</span>
+                </h3>
+
+            </div>
+
+
+            <div id="you_comment-tab" class="you_comment-tab" avalonctrl="you_comment-tab">
+                <a href="javascript:;" class="you_comment-tab-item i_active">商品简介</a>
+            </div>
+            <div class="pro-desc-inner lazyload_scope you_comment-target-list you_comment-target-tab">
+                {$goodsData['goods_introduce']}
+        </div>
+        </div>
+    </div>
+    <!--商品简介结束-->
+    <div class="large-12 columns">
+        <a name="same-cate"></a>
+    </div>
+
+    <link href="http://asset.ibanquan.com/middle/29956/c/342/585c9a2b0689873ecd000db0/css_baguettebox.css?v=1510214818_1482463787" media="screen" rel="stylesheet" type="text/css">
+    <script src="http://asset.ibanquan.com/middle/29956/c/342/585c9a2f0689873ecd000df2/js_baguettebox.js?v=1510214818_1482463791" type="text/javascript"></script>
+    <script src="http://asset.ibanquan.com/middle/29956/c/342/585c9a2f0689873ecd000df5/js_elevate_zoom.min.js?v=1510214818_1482463791" type="text/javascript"></script>
+    <script>
+        // 当前商品
+        window.CurrentProduct = {"page_desc":"","price":72000,"options":[{"id":47425,"name":"材质","values":["真皮","布艺"],"position":1}],"images":[{"image_id":"580d7e643a34a60f9f001c4a","id":"580d7e643a34a60f9f001c4a","image_name":"web.jpeg","name":"web.jpeg","image_epoch":"1484251079","epoch":"1484251079","width":630,"height":630,"alt":"","position":1,"src":"//asset.ibanquan.com/image/580d7e643a34a60f9f001c4a/s.jpeg"},{"image_id":"580d7e6453f00e0c70001c30","id":"580d7e6453f00e0c70001c30","image_name":"web.jpeg","name":"web.jpeg","image_epoch":"1484251079","epoch":"1484251079","width":800,"height":800,"alt":"","position":2,"src":"//asset.ibanquan.com/image/580d7e6453f00e0c70001c30/s.jpeg"}],"content_id":"580d7e4353f00e0c74001da0","created_at":"2016-10-24 11:21:39 +0800","feature_image":{"id":"580d7e643a34a60f9f001c4a","image_id":"580d7e643a34a60f9f001c4a","image_name":"web.jpeg","name":"web.jpeg","image_epoch":"1484251079","epoch":"1484251079","alt":"","position":1,"src":"//asset.ibanquan.com/image/580d7e643a34a60f9f001c4a/s.jpeg","width":630,"height":630},"short_desc":"","page_keywords":"","metas":{},"mobile_content_html":"","share_desc":"","mobile_html_id":"","compare_price_min":75000,"price_min":72000,"compare_price_varies":true,"page_url":"/products/p000008","compare_price_max":91000,"content":"580d7e4353f00e0c74001da0","price_varies":true,"page_title":"懒人沙发床小户型卧室双人榻榻米可折叠客厅布艺休闲小沙发","share_title":"","id":904161,"variants":[{"id":4349373,"option_1":"真皮","option_2":"","option_3":"","stock":10,"price":89000,"compare_price":91000,"weight":100000,"volume":0,"barcode":"","stock_type":"B","options":[{"option_id":47425,"option_value":"真皮","position":1}],"metas":{},"sale":0,"feature_image":null},{"id":4349374,"option_1":"布艺","option_2":"","option_3":"","stock":100,"price":72000,"compare_price":75000,"weight":100000,"volume":0,"barcode":"","stock_type":"B","options":[{"option_id":47425,"option_value":"布艺","position":2}],"metas":{},"sale":0,"feature_image":null}],"price_max":89000,"available":true,"handle":"p000008","share_image":{},"sale":0,"vendor":{"name":"林氏\u0026amp;木业","sub_name":"020一站式购物体验店，互联网家具原创品牌。","handle":"v000001","introduce":"林氏木业是佛山市阿里顺林家具有限公司旗下品牌，创立于2007年，是伴随阿里巴巴平台共同发展的家具电商企业，见证了家具电商行业的崛起与鼎盛。一直以来，公司以原创、品质、环保、时尚的家具设计理念，先进高效的家具产业集群模式与电商运营能力，给年轻一代的消费者带来舒适、时尚、便捷的家具购物体验。旗下以林氏木业、卡伊莲、林氏三大自主品牌为主。","page_title":"","page_keywords":"","page_desc":"","page_url":"/vendors/v000001","share_title":"","share_desc":"","share_image":{},"image":{"id":"584cfda39bedc47f9b00034d","name":"Untitled-1.jpeg","epoch":"1481440678","image_id":"584cfda39bedc47f9b00034d","image_name":"Untitled-1.jpeg","image_epoch":"1481440678","src":"//asset.ibanquan.com/image/584cfda39bedc47f9b00034d/Untitled-1.jpeg?1481440678","width":969,"height":969,"alt":"林氏\u0026amp;木业"}},"content_html":"\u003cimg src=\"//asset.ibanquan.com/image/580d7e5e3a34a60f9f001c47/s.jpeg?v=1477279327\" /\u003e","types":[{"handle":"t000001","name":"沙发"},{"handle":"t000003","name":"现代简约"}],"name":"懒人沙发床小户型卧室双人榻榻米可折叠客厅布艺休闲小沙发"};
+        // LightBox 设置（解决 IE7-8 BUG 用 setTimeout）
+        setTimeout(function() {
+            try {
+                baguetteBox.run('.pro-detail-gallery-main', {
+                    captions: true,       // true|false - Display image captions
+                    buttons: 'auto',      // 'auto'|true|false - Display buttons
+                    async: false,         // true|false - Load files asynchronously
+                    preload: 2,           // [number] - How many files should be preloaded from current image
+                    animation: 'slideIn'  // 'slideIn'|'fadeIn'|false - Animation type
+                });
+            } catch(err) {
+                $('.pro-detail-gallery-main>a').on('click',function(e) {
+                    e.preventDefault();
+                });
+                delete Array.prototype.filter;
+                delete Array.prototype.forEach;
+            }
+        }, 0);
+        // 鼠标放大镜
+        $(document).ready(function() {
+            var env, elevateZoomOpt, setElevateZoom;
+            env = {
+                ie8: !document.addEventListener
+            }
+            bIsMobile = $('body').hasClass('is_mobile');
+            if (!bIsMobile && !env.ie8) {
+                elevateZoomOpt = {
+                    zoomWindowWidth: 453,
+                    zoomWindowHeight: 453 - 1,
+                    zoomWindowOffetx: 10,
+                    zoomWindowOffety: 0,
+                    zoomEnabled: true,
+                    borderSize: 1,
+                    borderColour: "#ccc",
+                    lensBorderColour: "#aaa",
+                    cursor: "crosshair"
+                }
+                elevateZoomOpt.onZoomedImageLoaded = function() {
+                    var size = $('.zoomWindowContainer .zoomWindow').css('background-size').replace(/px/g, '').split(' ');
+                    if (size[0] <= elevateZoomOpt.zoomWindowWidth || size[1] <= elevateZoomOpt.zoomWindowHeight) {
+                        $('.zoomContainer').remove();
+                    }
+                }
+                setElevateZoom = function() {
+                    $('.zoomContainer').remove();
+                    $('.pro-detail-gallery-main > a:visible').elevateZoom(elevateZoomOpt);
+                }
+                yhsd.ready(function(sdk){
+                    sdk.events.subscribe('variantSelector.featureImage', function(){
+                        setElevateZoom();
+                    });
+                });
+                setTimeout(function(){
+                    $('.pro-detail-gallery-list > a').on('mouseenter', function(evt) {
+                        setElevateZoom();
+                    });
+                    setElevateZoom();
+                }, 500);
+            };
+        });
+    </script>
+    <style>
+        .zoomContainer {
+            z-index: 999;
+            pointer-events: none;
+        }
+    </style>
+    <script>
+        //鼠标移入小图
+        $('.samllpic').mouseenter(function () {
+            //alert(1);
+            var c=$(this).index();
+            //alert(c);
+            $(this).addClass('pro-detail-gallery-list-current')
+                .siblings('.samllpic').removeClass('pro-detail-gallery-list-current');
+            $('.bigpic').eq(c).css({'display':'block'}).siblings('.bigpic').css({'display':'none'});
+        })
+        //点击属性
+        $('.rideobutton').click(function () {
+            var c=$(this).index();
+            //alert(c);
+            $(this).addClass('selected settings-optionSelected_background settings-optionSelected_border settings-optionSelected_color')
+                .removeClass('unselected settings-optionUnSelected_background settings-optionUnSelected_border settings-optionUnSelected_color')
+                .siblings('.rideobutton')
+                .removeClass('selected settings-optionSelected_background settings-optionSelected_border settings-optionSelected_color')
+                .addClass('unselected settings-optionUnSelected_background settings-optionUnSelected_border settings-optionUnSelected_color');
+            $('.samllpic').eq(c+1).addClass('pro-detail-gallery-list-current')
+                .siblings('.samllpic').removeClass('pro-detail-gallery-list-current');
+            $('.bigpic').eq(c+1).css({'display':'block'}).siblings('.bigpic').css({'display':'none'});
+            $('.stock').html($(this).attr('stock'));
+            $(this).siblings('input').val($(this).attr('id'));
+            $('.float-left').val(1);
+            $('.num-warn').css({'display':'none'})
+        })
+        //购买数量
+       $('input[name=number]').change(function () {
+           //alert(1);
+           if ($(this).val()<1){
+               $(this).val(1);
+           }
+           if($(this).val()>Number($('.stock').html())){
+               $(this).val(Number($('.stock').html()))
+           }else {
+               $('.stock-warn').css({'display':'none'});
+           }
+       })
+        //加入购物车
+        $('.pro-detail-addCart').click(function () {
+                var attr= $('.rideobutton').siblings('input');
+                if (attr.val()==''){
+                    $('.num-warn').css({'display':'inline-block'});
+                    return;
+                }else{
+                    $('.num-warn').css({'display':'none'});
+                }
+                var attrnum=$('input[name=number]').val();
+                var attrnum=Number(attrnum);
+                var attrid=attr.val();
+                var attrid=Number(attrid);
+                //alert(attrid);
+                //没有登录去登录
+            if($('.header-login').html()=='登录'){
+                location.href="{:url('index/login/index')}";
+            }
+                //alert(attrid);
+                $.ajax({
+                    data:{cart_attrid:attrid,cart_attrnum:attrnum},
+                    url:"{:url('index/cart/store')}",
+                    dataType:'json',
+                    type:'post',
+                    success:function (reg) {
+                        console.log(attrid,attrnum,reg);
+                        if(reg){
+                            $('#yhsd_variantSelector_addSucc').show();
+                        }else {
+                            $('.stock-warn').css({'display':'inline-block'});
+                        }
+                    }
+                })
+            })
+        $('.pro-detail-addSucc-close').click(function () {
+            $('#yhsd_variantSelector_addSucc').hide();
+        })
+    </script>
+
+</div>
+<div class="fast-bar settings_fastbar-background" id="fastbar">
+    <div class="row">
+        <div class="large-6 columns">
+            <a class="float-left logo"><img src="http://asset.ibanquan.com/middle/29956/c/342/585c9a300689873ecd000e07/logo?v=1482463792" alt="Knock"></a>
+            <a id="fast-intro" class="float-left fast-btn settings_fastbar-color settings_fastbar-border" href="http://knock.youhaovip.com/products/p000008#detail">商品简介</a>
+            <a id="fast-rate" class="float-left fast-btn settings_fastbar-color settings_fastbar-border" href="http://knock.youhaovip.com/products/p000008#comment">评价晒单</a>
+            <a id="fast-cate" class="float-left fast-btn settings_fastbar-color settings_fastbar-border" href="http://knock.youhaovip.com/products/p000008#same-cate">同类推荐</a>
+        </div>
+        <div class="button-for-buy large-6 columns text-right">
+            <a class="r-btn settings_fastbar-cart-color settings_fastbar-cart-background" href="http://knock.youhaovip.com/cart">购物车</a>
+
+            <a id="buy-event" class="r-btn settings_fastbar-buy-color settings_fastbar-buy-background">立即购买</a>
+
+        </div>
+    </div>
+</div>
+{/block}

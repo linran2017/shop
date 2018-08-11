@@ -1,0 +1,52 @@
+{extend name='order'/}
+
+{block name='content'}
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li>
+                <a href="{:url('index')}">全部订单</a>
+            </li>
+            <li>
+                <a href="{:url('unpay')}">未付款订单</a>
+            </li>
+            <li class="layui-this">
+                <a href="{:url('pay')}">已付款订单</a>
+            </li>
+        </ul>
+        <div class="layui-tab-content">
+            <div style="padding: 15px;">
+                {if condition='$data'}
+                <table class="layui-table">
+
+                    <thead>
+                    <tr>
+                        <th>订单编号</th>
+                        <th>买家</th>
+                        <th>订单状态</th>
+                        <th>创建时间</th>
+                        <th>支付时间</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                   {foreach name='data' item='v'}
+                    <tr>
+                        <td>{$v['order_code']}</td>
+                        <td>{$v['username']}</td>
+                        <td>已付款</td>
+                        <td>{:date('20y-y-d H:i:s',$v['order_createtime'])}</td>
+                        <td>{:date('20y-y-d H:i:s',$v['order_paytime'])}</td>
+                        <td>
+                            <a href="{:url('detail',['order_id'=>$v['order_id']])}" class="layui-btn">订单详情</a>
+                        </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                {else /}
+                <h1>暂是没有订单</h1>
+                {/if}
+            </div>
+{/block}

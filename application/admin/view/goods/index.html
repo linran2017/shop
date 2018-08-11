@@ -1,0 +1,76 @@
+{extend name='goods'/}
+
+{block name='content'}
+<div class="layui-body">
+    <!-- 内容主体区域 -->
+    <div class="layui-tab">
+        <ul class="layui-tab-title">
+            <li class="layui-this">
+                <a href="{:url('index')}">商品列表</a>
+            </li>
+            <li>
+                <a href="{:url('store')}">商品添加</a>
+            </li>
+        </ul>
+        <div class="layui-tab-content">
+            <div style="padding: 15px;">
+                <table class="layui-table">
+
+                    <thead>
+                    <tr>
+                        <th>商品编号</th>
+                        <th>商品名称</th>
+                        <th>商品主图</th>
+                        <th>商品价格</th>
+                        <th>商品排序</th>
+                        <th>商品属性操作</th>
+                        <th>商品操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach name='data' item='v'}
+                    <tr>
+                    <td>{$v['goods_id']}</td>
+                    <td>{$v['goods_title']}</td>
+                    <td>
+                        <img src="{$v['goods_master']}" style="width: 60px; height: 60px;" />
+                    </td>
+                    <td>{$v['goods_price']}</td>
+                    <td>{$v['goods_sort']}</td>
+                    <td>
+                        <a href="{:url('admin/attr/store',['id'=>$v['goods_id']])}" class="layui-btn layui-btn-mini">添加属性</a>
+                        <a href="{:url('admin/attr/index',['id'=>$v['goods_id']])}" class="layui-btn layui-btn-normal layui-btn-mini">属性列表</a>
+                    </td>
+                    <td>
+                        <a href="{:url('admin/goods/edit',['id'=>$v['goods_id']])}" class="layui-btn layui-btn-mini">编辑</a>
+                        <a href="javascript:;" onclick="del({$v['goods_id']})" class="layui-btn layui-btn-danger layui-btn-mini">下架</a>
+                    </td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <script>
+                    function del(id) {
+                        //alert(id);
+                        layui.use('layer', function(){
+                            function del(id) {
+                                alert(1);
+                            }
+                            var layer = layui.layer;
+
+                                /*layer.confirm('is not?', {icon: 3, title:'删除提示'}, function(index){
+                                    //do something
+                                    location.href("{:url('del')}"+'?id='+id)
+                                    layer.close(index);
+                                });*/
+//eg2
+                                layer.confirm('确定要下架此商品吗?', function(index){
+                                    //do something
+                                    location.href="{:url('unonsale')}"+'?id='+id;
+                                    layer.close(index);
+                                });
+                        });
+                    }
+                </script>
+            </div>
+{/block}

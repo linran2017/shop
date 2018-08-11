@@ -1,0 +1,244 @@
+{extend name='base'/}
+{block name='center'}
+<div id="content_for_layout" class="yhsd-base"><div class="wrapper">
+    <div class="cont account">
+        <dl class="account-sideNav yhsd-form-background yhsd-main-border">
+            <dd>
+                <a href="javascript:;" class="yhsd-font-desc">个人中心</a>
+            </dd>
+            <dd style="">
+                <a href="{:url('index/order/lists')}" class="yhsd-font-desc">我的订单</a>
+            </dd>
+            <dd class="selected">
+                <a href="{:url('index/address/index')}" class="yhsd-font-desc">收货地址</a>
+            </dd>
+        </dl>
+        <div class="account-sideCont">
+            <div class="account-sideCont-block personal-address yhsd-form-background yhsd-main-border">
+                <h3 class="yhsd-font-title">收货地址</h3>
+                <div class="personal-address-table">
+                    <table>
+                        <thead>
+                        <tr>
+                            <th colspan="4">
+                                <a id="yhsd-address-addBtn" class="btn btn-primary btn-md" href="javascript:void(0);">新增收货地址</a>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {foreach name='addressData' item='v'}
+                        <tr class="address-item" data-id="192670">
+                            <td class="shipment">
+                                <div class="shipment-receiver yhsd-font-title">
+                                    <span class="name">{$v['address_persone']}</span>
+                                    <span class="phone">{$v['address_tel']}</span>
+                                </div>
+                                <div class="shipment-address yhsd-font-text">
+                                    <span class="province">{$v['address_detail']}</span>
+                                    <!--<span class="city">宁波市</span>
+                                    <span class="area">江东区</span>
+                                    <span class="street">宣传</span>-->
+                                </div>
+                            </td>
+                            <td class="default-address default">
+                                {if condition="$v['default']"}
+                                <a href="javascript:;" class="yhsd-font-desc">默认地址</a>
+                                {else /}
+                                <a href="{:url('index/address/setdefault',['id'=>$v['address_id']])}" class="yhsd-font-desc">设为默认地址</a>
+
+                                {/if}
+                            </td>
+                            <td class="edit">
+
+
+                                <a href="{:url('index/address/edit',['id'=>$v['address_id']])}" class="yhsd-font-desc">编辑</a>
+                            </td>
+                            <td class="delete">
+                                <a href="javascript:void(0);" class="yhsd-font-desc del-show">删除</a>
+                                <input type="hidden" name="id" value="{$v['address_id']}" />
+                            </td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                        <style>
+                            .error{
+                                border: 1px solid red !important;
+                            }
+                        </style>
+                    </table>
+                    <div class="all-cover" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.65);">
+                        <!--地址表单-->
+                        <div class="yhsd-popup store" id="yhsd-modal" style="display: none; margin-left: -295px; margin-top: -194px;">
+                            <h3 class="yhsd-font-title">新增收货地址</h3>
+                            <div class="box add-address">
+                                <form class="input-field" id="yhsd-address-inputField" action="" method="post">
+                                    <div class="input-area input-area-lg" data-state="">
+                                        <input id="yhsd-address-name" placeholder="收货人" class="input yhsd-font-text" type="text" name="address_persone" >
+                                        <span style="color: red; font-size: 12px; display: none;" class="warn">
+
+                                    </span>
+                                    </div>
+                                    <div class="tel input-area input-area-lg" data-state="">
+                                        <input id="yhsd-address-mobile" class="input yhsd-font-text" placeholder="联系电话" type="text" name="address_tel" maxlength="200">
+                                        <span style="color: red; font-size: 12px; display: none;" class="warn">
+
+                                    </span>
+                                    </div>
+                                    <div class="select-group">
+                                        <!--<div id="yhsd-area-selection" class="yhsd-font-text">
+                                            <select class="yhsd-select"><option value="">请选择省份</option><option value="110000">北京</option><option value="120000">天津</option><option value="130000">河北省</option><option value="140000">山西省</option><option value="150000">内蒙古自治区</option><option value="210000">辽宁省</option><option value="220000">吉林省</option><option value="230000">黑龙江省</option><option value="310000">上海</option><option value="320000">江苏省</option><option value="330000">浙江省</option><option value="340000">安徽省</option><option value="350000">福建省</option><option value="360000">江西省</option><option value="370000">山东省</option><option value="410000">河南省</option><option value="420000">湖北省</option><option value="430000">湖南省</option><option value="440000">广东省</option><option value="450000">广西壮族自治区</option><option value="460000">海南省</option><option value="500000">重庆</option><option value="510000">四川省</option><option value="520000">贵州省</option><option value="530000">云南省</option><option value="540000">西藏自治区</option><option value="610000">陕西省</option><option value="620000">甘肃省</option><option value="630000">青海省</option><option value="640000">宁夏回族自治区</option><option value="650000">新疆维吾尔自治区</option><option value="710000">台湾</option><option value="810000">香港特别行政区</option><option value="820000">澳门特别行政区</option></select><select class="yhsd-select" style="display: none;"><option value="">请选择城市</option></select>
+                                            <select class="yhsd-select" style="display: none;"><option value="">请选择县区</option></select>
+                                        </div>-->
+                                        <div class="tips">请选择完整的地址</div>
+                                        <input id="yhsd-area-selection-code" type="hidden"  name="areacode">
+                                    </div>
+                                    <div class="full input-area input-area-lg" data-state="">
+                                        <input name="address_detail" id="yhsd-address-detail" placeholder="详细地址" class="input yhsd-font-text" type="text" maxlength="200">
+                                        <span style="color: red; font-size: 12px; display: none;" class="warn">
+
+                                    </span>
+                                    </div>
+                                    <div class="full input-area input-area-lg" data-state="">
+                                        <input id="yhsd-address-zipcode" class="input yhsd-font-text" placeholder="邮政编码" name="address_code" type="text" maxlength="200">
+                                        <span style="color: red; font-size: 12px; display: none;" class="warn">
+
+                                    </span>
+                                    </div>
+                                    <div class="ctrl-btns">
+                                        <button id="yhsd-address-edit-submit" class="btn btn-md btn-primary" type="submit">确定</button>
+                                        <button class="btn btn-md btn-secondary yhsd-popup-close" type="button">取消</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--确定删除地址窗口-->
+                        <div class="yhsd-popup del" id="yhsd-modal" style="display: none; margin-left: -295px; margin-top: -103.5px;">
+                            <h3 class="yhsd-font-title">确定要删除所选收货地址吗？</h3>
+                            <div class="box">
+                                <div class="title yhsd-font-text">确定要删除所选收货地址吗？</div>
+                                <div class="ctrl-btns">
+                                    <button class="btn btn-primary btn-md del-confirm" id="yhsd-address-delete-submit" type="button">确定</button>
+                                    <button class="btn btn-secondary btn-md yhsd-popup-close del-close" type="button">取消</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!--确定删除地址窗口结束-->
+                        <!--最多保存5个地址-->
+                        <div class="more-address yhsd-popup" id="yhsd-modal" style="display: none; margin-left: -295px; margin-top: -103.5px;">
+                            <h3>保存地址不得超过5条</h3>
+                            <div class="box">
+                                <div class="title yhsd-font-text">保存地址不得超过5条</div>
+                                <div class="ctrl-btns">
+                                    <button class="more-close btn btn-primary btn-md yhsd-popup-close" type="submit">确定</button>
+                                </div>
+                            </div>
+                        </div>
+                        <!--最多保存5个地址结束-->
+                    </div>
+
+                    <script>
+                        //表单显示
+                        $('#yhsd-address-addBtn').click(function () {
+                            if($('.address-item').length>=5){
+                                $('.all-cover').show().css({'z-index':'9'});
+                                $('.more-address').show().css({'position':'fixed','top':'50%','left':'50%'});
+                            }else{
+                                $('.all-cover').show().css({'z-index':'9'});
+                                $('.store').show().css({'position':'fixed','top':'50%','left':'50%'});
+                            }
+                        })
+                        //地址超过5个提示窗口隐藏
+                        $('.more-close').click(function () {
+                            $('.all-cover').hide();
+                            $('.more-address').hide();
+                        })
+                        //表单隐藏
+                        $('.yhsd-popup-close').click(function () {
+                            $('.all-cover').hide();
+                            $('.store').hide();
+                        })
+                        //收货人验证
+                        $('input[name=address_persone]').blur(function () {
+                            var persone=$(this).val();
+                            if (persone==''){
+                                $(this).addClass('error').siblings('.warn').show().html('收货人不得为空');
+                                return;
+                            }else {
+                                $(this).removeClass('error').siblings('.warn').hide().html('');
+                            }
+                        })
+                        //电话验证
+                        $('input[name=address_tel]').blur(function () {
+                            var tel=$(this).val();
+                            if (tel==''){
+                                $(this).addClass('error').siblings('.warn').show().html('联系电话不得为空');
+                                return;
+                            }else {
+                                $(this).removeClass('error').siblings('.warn').hide().html('');
+                            }
+                        })
+                        //地址验证
+                        $('input[name=address_detail]').blur(function () {
+                            var detail=$(this).val();
+                            if (detail==''){
+                                $(this).addClass('error').siblings('.warn').show().html('详细地址不得为空');
+                                return;
+                            }else {
+                                $(this).removeClass('error').siblings('.warn').hide().html('');
+                            }
+                        })
+                        //表单提交
+                        $('form').submit(function () {
+                            if($('.error').length>0){
+                                return false;
+                            }
+                            var persone= $('input[name=address_persone]').val();
+                            var tel= $('input[name=address_tel]').val();
+                            var detail= $('input[name=assress_detail]').val();
+                            if(persone==""){
+                                $('input[name=address_persone]').addClass('error').siblings('.warn').show().html('收货人不能为空');
+                                return false;
+                            }else {
+                                $('input[name=address_persone]').removeClass('error').siblings('.warn').show().html('');
+                            }
+                            if(tel==""){
+                                $('input[name=address_tel]').addClass('error').siblings('.warn').show().html('联系电话不能为空');
+                                return false;
+                            }else {
+                                $('input[name=address_tel]').removeClass('error').siblings('.warn').show().html('');
+                            }
+                            if(detail==""){
+                                $('input[address_detail]').addClass('error').siblings('.warn').show().html('详细地址不能为空');
+                                return false;
+                            }else {
+                                $('input[name=address_detail]').removeClass('error').siblings('.warn').show().html('');
+                            }
+                        })
+
+                        //确定删除显示
+                        $('.del-show').click(function () {
+                            id=$(this).siblings('input').val();
+                            id=Number(id);
+                            //alert(id);
+                            $('.all-cover').show().css({'z-index':'9'});
+                            $('.del').show().css({'position':'fixed','top':'50%','left':'50%'});
+                        })
+                        //确定删除窗口消失
+                        $('.del-close').click(function () {
+                            $('.all-cover').hide();
+                            $('.del').hide();
+                        })
+                        //确定删除
+                        $('.del-confirm').click(function () {
+                            //alert(id);
+                            location.href="{:url('index/address/del')}"+'?id='+id;
+                        })
+                    </script>
+                   <!-- 地址表单结束-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+{/block}
